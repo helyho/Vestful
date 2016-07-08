@@ -42,6 +42,8 @@
  - route: 服务搜寻的路由,如果没有这个节点,则默认值为 classPath 的类名,例如:org.voovan.restful.TestClass则默认 route 为/TestClass
  - classPath: 提供接口的类说明
  - desc: 接口描述信息
+ 
 --------------------------------------------
+
 ####服务部署说明:
    服务配置请参照 Voovan 的说明文档,主要配置/conf/web.json 文件即可。
