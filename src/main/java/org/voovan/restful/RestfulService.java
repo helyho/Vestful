@@ -29,7 +29,7 @@ public class RestfulService {
      * 构造函数
      */
     public RestfulService(){
-        httpServer = HttpServer.newInstance(28080);
+        httpServer = HttpServer.newInstance();
     }
 
     /**
