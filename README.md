@@ -47,3 +47,9 @@
 
 ####服务部署说明:
    服务配置请参照 Voovan 的说明文档,主要配置/conf/web.json 文件即可。
+
+----------------------------------------------
+
+####使用举例:
+测试代码请参照:[TestClass.java](https://git.oschina.net/helyho/Vestful/blob/master/src/test/java/org/voovan/test/restful/TestClass.java)
+    
