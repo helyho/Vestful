@@ -1,0 +1,8 @@
+[
+    {
+      "name":"test",
+      "route":"/test/",      //默认值为 classPath 的类名,例如:org.voovan.restful.TestClass则默认 route 为TestClass
+      "classPath":"org.voovan.test.restful.TestClass",
+      "desc":"this is a test interface."
+    }
+]
