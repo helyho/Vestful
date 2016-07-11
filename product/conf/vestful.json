@@ -2,7 +2,7 @@
     {
       "name":"test",
       "route":"/test/",      //默认值为 classPath 的类名,例如:org.voovan.vestful.TestClass则默认 route 为TestClass
-      "classPath":"org.voovan.test.restful.TestClass",
+      "classPath":"org.voovan.test.vestful.TestClass",
       "desc":"this is a test interface."
     }
 ]
