@@ -1,4 +1,4 @@
-package org.voovan.test.restful;
+package org.voovan.test.vestful;
 
 /**
  * 类文字命名

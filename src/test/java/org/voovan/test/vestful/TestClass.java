@@ -1,4 +1,4 @@
-package org.voovan.test.restful;
+package org.voovan.test.vestful;
 
 import org.voovan.vestful.annotation.Param;
 import org.voovan.vestful.annotation.Restful;
