@@ -6,6 +6,7 @@ import org.voovan.restful.annotation.Restful;
 import org.voovan.tools.TObject;
 import org.voovan.tools.TReflect;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -35,12 +36,12 @@ public class RestfulService {
     /**
      * 启动服务
      */
-    public void serve(){
+    public void serve() throws UnsupportedEncodingException {
         RestfulContext.initWithConfig(httpServer);
         httpServer.serve();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws UnsupportedEncodingException {
         RestfulService restfulService = new RestfulService();
         restfulService.serve();
     }

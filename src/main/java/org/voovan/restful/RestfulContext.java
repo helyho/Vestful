@@ -57,7 +57,7 @@ public class RestfulContext {
      * 初始化 Restful 的接口到 HttpServer 对象
      * @param server HttpServer 对象
      */
-    public static void initWithConfig(HttpServer server) {
+    public static void initWithConfig(HttpServer server) throws UnsupportedEncodingException {
         List<ClassElement> classElemenets = loadConfig();
         for (ClassElement classElemenet : classElemenets) {
             String route = classElemenet.getRoute();
@@ -65,7 +65,7 @@ public class RestfulContext {
                 //增加路由控制
                 String httpRoute = route+"/"+methodElement.getName();
                 server.otherMethod(methodElement.getHttpMethod(), httpRoute, new RestfulBizHandler(httpRoute,methodElement));
-                server.otherMethod("GET", httpRoute+"!", new MethodDescHandler(httpRoute,methodElement));
+                server.otherMethod("GET", httpRoute+"!", new MethodDescHandler(methodElement));
             }
             server.otherMethod("GET", route+"!", new ClassDescHandler(classElemenet));
         }

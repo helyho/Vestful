@@ -7,6 +7,8 @@ import org.voovan.restful.dto.ClassElement;
 import org.voovan.tools.TFile;
 import org.voovan.tools.json.JSON;
 
+import java.io.UnsupportedEncodingException;
+
 /**
  * Restful 类文档处理类
  *
@@ -17,7 +19,6 @@ import org.voovan.tools.json.JSON;
  * Licence: Apache v2 License
  */
 public class ClassDescHandler implements HttpBizHandler {
-    private String routePath;
     private ClassElement classElement;
     private String htmlContent;
 
@@ -25,10 +26,9 @@ public class ClassDescHandler implements HttpBizHandler {
      * 构造函数
      * @param classElement ClassElement 对象
      */
-    public ClassDescHandler(ClassElement classElement){
-        this.routePath = routePath;
+    public ClassDescHandler(ClassElement classElement) throws UnsupportedEncodingException {
         this.classElement = classElement;
-        htmlContent = new String(TFile.loadResource("ClassDesc.html"));
+        this.htmlContent = new String(TFile.loadResource("ClassDesc.html"),"UTF-8");
     }
 
     @Override

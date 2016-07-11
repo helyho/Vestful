@@ -109,10 +109,11 @@ public class RestfulBizHandler implements HttpBizHandler {
      * @return
      */
     public String getParamPath(String routePath){
-        String matchRoute =  routePath;
+        StringBuilder matchRoute = new StringBuilder(routePath);
         for (ParamElement paramElement : methodElement.getParamElements()) {
-            matchRoute = matchRoute + "/:" + paramElement.getName();
+            matchRoute.append("/:");
+            matchRoute.append(paramElement.getName());
         }
-        return matchRoute;
+        return matchRoute.toString();
     }
 }
