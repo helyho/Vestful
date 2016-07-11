@@ -3,6 +3,7 @@ package org.voovan.vestful.handler;
 import org.voovan.http.server.HttpBizHandler;
 import org.voovan.http.server.HttpRequest;
 import org.voovan.http.server.HttpResponse;
+import org.voovan.tools.log.Logger;
 import org.voovan.vestful.dto.ClassElement;
 import org.voovan.tools.TFile;
 import org.voovan.tools.json.JSON;
@@ -26,9 +27,13 @@ public class ClassDescHandler implements HttpBizHandler {
      * 构造函数
      * @param classElement ClassElement 对象
      */
-    public ClassDescHandler(ClassElement classElement) throws UnsupportedEncodingException {
+    public ClassDescHandler(ClassElement classElement) {
         this.classElement = classElement;
-        this.htmlContent = new String(TFile.loadResource("ClassDesc.html"),"UTF-8");
+        try {
+            this.htmlContent = new String(TFile.loadResource("ClassDesc.html"),"UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            Logger.error("Load ClassDesc template error.", e);
+        }
     }
 
     @Override

@@ -90,7 +90,7 @@ public class RestfulBizHandler implements HttpBizHandler {
      * 是否能从路径中取参数
      * @param requestPath  请求路径
      * @param routePath    匹配路径
-     * @return
+     * @return 获取路径变量
      */
     public boolean canFetctPathVariables(String requestPath,String routePath){
         boolean matchRouteIgnoreCase = WebContext.getWebServerConfig().isMatchRouteIgnoreCase();
@@ -103,8 +103,8 @@ public class RestfulBizHandler implements HttpBizHandler {
 
     /**
      * 获取参数路径
-     * @param routePath
-     * @return
+     * @param routePath 路由路径
+     * @return  参数路径
      */
     public String getParamPath(String routePath){
         StringBuilder matchRoute = new StringBuilder(routePath);

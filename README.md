@@ -56,4 +56,9 @@
 
 ####使用举例:
 测试代码请参照:[TestClass.java](https://git.oschina.net/helyho/Vestful/blob/master/src/test/java/org/voovan/test/restful/TestClass.java)
+
+----------------------------------------------
     
+####说明文档解释:
+
+![](http://git.oschina.net/uploads/images/2016/0711/172233_336dbdd7_116083.png)

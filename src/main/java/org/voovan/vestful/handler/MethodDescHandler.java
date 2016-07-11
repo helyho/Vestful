@@ -3,6 +3,7 @@ package org.voovan.vestful.handler;
 import org.voovan.http.server.HttpBizHandler;
 import org.voovan.http.server.HttpRequest;
 import org.voovan.http.server.HttpResponse;
+import org.voovan.tools.log.Logger;
 import org.voovan.vestful.dto.MethodElement;
 import org.voovan.tools.TFile;
 import org.voovan.tools.json.JSON;
@@ -27,9 +28,13 @@ public class MethodDescHandler implements HttpBizHandler {
      *
      * @param methodElement methodElement 对象
      */
-    public MethodDescHandler(MethodElement methodElement) throws UnsupportedEncodingException {
+    public MethodDescHandler(MethodElement methodElement) {
         this.methodElement = methodElement;
-        this.htmlContent = new String(TFile.loadResource("MethodDesc.html"),"UTF-8");
+        try {
+            this.htmlContent = new String(TFile.loadResource("MethodDesc.html"),"UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            Logger.error("Load MethodDesc template error.", e);
+        }
     }
 
     @Override

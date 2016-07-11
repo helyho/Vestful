@@ -26,7 +26,7 @@ public class RestfulService {
     /**
      * 启动服务
      */
-    public void serve() throws UnsupportedEncodingException {
+    public void serve() {
         RestfulContext.initWithConfig(httpServer);
         httpServer.serve();
     }
