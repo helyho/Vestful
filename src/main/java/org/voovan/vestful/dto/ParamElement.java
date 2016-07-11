@@ -1,10 +1,4 @@
-package org.voovan.restful.dto;
-
-import org.voovan.tools.TReflect;
-
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
+package org.voovan.vestful.dto;
 
 /**
  * 类文字命名

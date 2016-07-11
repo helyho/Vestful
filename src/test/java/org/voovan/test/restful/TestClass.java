@@ -1,7 +1,7 @@
 package org.voovan.test.restful;
 
-import org.voovan.restful.annotation.Param;
-import org.voovan.restful.annotation.Restful;
+import org.voovan.vestful.annotation.Param;
+import org.voovan.vestful.annotation.Restful;
 
 /**
  * 类文字命名

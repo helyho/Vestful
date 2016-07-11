@@ -1,8 +1,7 @@
-package org.voovan.restful.dto;
+package org.voovan.vestful.dto;
 
 import org.voovan.tools.TReflect;
 import org.voovan.tools.TString;
-import org.voovan.tools.json.JSON;
 import org.voovan.tools.json.annotation.NotJSON;
 
 import java.lang.reflect.Method;

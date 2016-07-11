@@ -1,4 +1,4 @@
-package org.voovan.restful.annotation;
+package org.voovan.vestful.annotation;
 
 import java.lang.annotation.*;
 

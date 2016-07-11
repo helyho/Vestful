@@ -1,11 +1,11 @@
-package org.voovan.restful;
+package org.voovan.vestful;
 
 import org.voovan.http.server.HttpServer;
-import org.voovan.restful.dto.ClassElement;
-import org.voovan.restful.dto.MethodElement;
-import org.voovan.restful.handler.ClassDescHandler;
-import org.voovan.restful.handler.RestfulBizHandler;
-import org.voovan.restful.handler.MethodDescHandler;
+import org.voovan.vestful.dto.ClassElement;
+import org.voovan.vestful.dto.MethodElement;
+import org.voovan.vestful.handler.ClassDescHandler;
+import org.voovan.vestful.handler.RestfulBizHandler;
+import org.voovan.vestful.handler.MethodDescHandler;
 import org.voovan.tools.TFile;
 import org.voovan.tools.TObject;
 import org.voovan.tools.TReflect;
@@ -37,7 +37,7 @@ public class RestfulContext {
 
         List<ClassElement> classElements = new ArrayList<ClassElement>();
         try {
-            byte[] fileContent = TFile.loadFileFromContextPath("/conf/restful.json");
+            byte[] fileContent = TFile.loadFileFromContextPath("/conf/vestful.json");
             List<Map<String, Object>> classConfigs = TObject.cast(JSON.parse(new String(fileContent, "UTF-8")));
             for (Map<String, Object> classConfig : classConfigs) {
                 //通过反射构造ClassElement 元素
@@ -48,7 +48,7 @@ public class RestfulContext {
                 classElements.add(classElement);
             }
         }catch(UnsupportedEncodingException | ParseException | ReflectiveOperationException e){
-            Logger.error("Load /conf/restful.json file error.",e);
+            Logger.error("Load /conf/vestful.json file error.",e);
         }
         return classElements;
     }

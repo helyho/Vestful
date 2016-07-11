@@ -1,9 +1,7 @@
-package org.voovan.restful.dto;
+package org.voovan.vestful.dto;
 
 import org.voovan.tools.TDateTime;
 import org.voovan.tools.json.JSON;
-
-import java.util.Date;
 
 /**
  * 返回的错误信息
