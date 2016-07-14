@@ -3,6 +3,7 @@ package org.voovan.vestful;
 import org.voovan.http.server.HttpServer;
 import org.voovan.vestful.dto.ClassElement;
 import org.voovan.vestful.dto.MethodElement;
+import org.voovan.vestful.dto.ParamElement;
 import org.voovan.vestful.handler.ClassDescRouter;
 import org.voovan.vestful.handler.RestfulRouter;
 import org.voovan.vestful.handler.MethodDescRouter;
@@ -57,7 +58,7 @@ public class RestfulContext {
      * 初始化 Restful 的接口到 HttpServer 对象
      * @param server HttpServer 对象
      */
-    public static void initWithConfig(HttpServer server) {
+    public static void installRestful(HttpServer server) {
         List<ClassElement> classElemenets = loadConfig();
         for (ClassElement classElemenet : classElemenets) {
             String route = classElemenet.getRoute();
@@ -65,9 +66,25 @@ public class RestfulContext {
                 //增加路由控制
                 String httpRoutePath = route+"/"+methodElement.getName();
                 server.otherMethod(methodElement.getHttpMethod(), httpRoutePath, new RestfulRouter(httpRoutePath,methodElement));
+                server.otherMethod(methodElement.getHttpMethod(), getParamPath(httpRoutePath,methodElement), new RestfulRouter(httpRoutePath,methodElement));
                 server.otherMethod("GET", httpRoutePath+"!", new MethodDescRouter(methodElement));
             }
+
             server.otherMethod("GET", route+"!", new ClassDescRouter(classElemenet));
         }
+    }
+
+    /**
+     * 获取参数路径
+     * @param routePath 路由路径
+     * @return  参数路径
+     */
+    public static String getParamPath(String routePath,MethodElement methodElement){
+        StringBuilder matchRoute = new StringBuilder(routePath);
+        for (ParamElement paramElement : methodElement.getParamElements()) {
+            matchRoute.append("/:");
+            matchRoute.append(paramElement.getName());
+        }
+        return matchRoute.toString();
     }
 }

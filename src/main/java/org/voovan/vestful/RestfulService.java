@@ -27,7 +27,7 @@ public class RestfulService {
      * 启动服务
      */
     public void serve() {
-        RestfulContext.initWithConfig(httpServer);
+        RestfulContext.installRestful(httpServer);
         httpServer.serve();
     }
 

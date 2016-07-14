@@ -1,6 +1,7 @@
 package org.voovan.vestful.handler;
 
 import org.voovan.http.server.*;
+import org.voovan.vestful.RestfulContext;
 import org.voovan.vestful.dto.Error;
 import org.voovan.vestful.dto.MethodElement;
 import org.voovan.vestful.dto.ParamElement;
@@ -41,8 +42,8 @@ public class RestfulRouter implements HttpRouter {
             List<ParamElement> paramElements = methodElement.getParamElements();
 
             //取 URL 中的参数变量
-            if(canFetctPathVariables(requestPath,routePath)){
-                String paramPath = getParamPath(routePath);
+            String paramPath = canFetctPathVariables(requestPath,routePath);
+            if(paramPath!=null){
                 Map<String,String> params = HttpDispatcher.fetchPathVariables(requestPath,paramPath);
                 httpRequest.getParameters().putAll(params);
             }
@@ -93,26 +94,15 @@ public class RestfulRouter implements HttpRouter {
      * @param routePath    匹配路径
      * @return 获取路径变量
      */
-    public boolean canFetctPathVariables(String requestPath,String routePath){
+    public String canFetctPathVariables(String requestPath,String routePath){
         boolean matchRouteIgnoreCase = WebContext.getWebServerConfig().isMatchRouteIgnoreCase();
-        if(HttpDispatcher.matchPath(requestPath,getParamPath(routePath),matchRouteIgnoreCase)){
-            return true;
+        String paramPath = RestfulContext.getParamPath(routePath,methodElement);
+        if(HttpDispatcher.matchPath(requestPath, paramPath,matchRouteIgnoreCase)){
+            return paramPath;
         }else{
-            return false;
+            return null;
         }
     }
 
-    /**
-     * 获取参数路径
-     * @param routePath 路由路径
-     * @return  参数路径
-     */
-    public String getParamPath(String routePath){
-        StringBuilder matchRoute = new StringBuilder(routePath);
-        for (ParamElement paramElement : methodElement.getParamElements()) {
-            matchRoute.append("/:");
-            matchRoute.append(paramElement.getName());
-        }
-        return matchRoute.toString();
-    }
+
 }
