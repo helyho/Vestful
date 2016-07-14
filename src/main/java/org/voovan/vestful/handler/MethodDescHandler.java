@@ -1,8 +1,8 @@
 package org.voovan.vestful.handler;
 
-import org.voovan.http.server.HttpBizHandler;
 import org.voovan.http.server.HttpRequest;
 import org.voovan.http.server.HttpResponse;
+import org.voovan.http.server.HttpRouter;
 import org.voovan.tools.log.Logger;
 import org.voovan.vestful.dto.MethodElement;
 import org.voovan.tools.TFile;
@@ -19,7 +19,7 @@ import java.io.UnsupportedEncodingException;
  * WebSite: https://github.com/helyho/Vestful
  * Licence: Apache v2 License
  */
-public class MethodDescHandler implements HttpBizHandler {
+public class MethodDescHandler implements HttpRouter {
     private MethodElement methodElement;
     private String htmlContent;
 

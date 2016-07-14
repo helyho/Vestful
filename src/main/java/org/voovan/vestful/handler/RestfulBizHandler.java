@@ -19,7 +19,7 @@ import java.util.Map;
  * WebSite: https://github.com/helyho/Vestful
  * Licence: Apache v2 License
  */
-public class RestfulBizHandler implements HttpBizHandler {
+public class RestfulBizHandler implements HttpRouter {
     private String routePath;
     private MethodElement methodElement;
 
@@ -47,8 +47,9 @@ public class RestfulBizHandler implements HttpBizHandler {
                 httpRequest.getParameters().putAll(params);
             }
 
-            //通过 Request 中的参数数量调用指定的方法
+            //通过 Request 中的参数数量确定方法是否可以调用
             if(httpRequest.getParameters().size() >= paramElements.size()){
+
                 //将 HTTP 请求中的参数,转换为参数数组
                 Object[] methodParams = new Object[paramElements.size()];
                 for(int i=0;i<paramElements.size();i++){
