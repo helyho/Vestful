@@ -19,7 +19,7 @@ import java.util.Map;
  * WebSite: https://github.com/helyho/Vestful
  * Licence: Apache v2 License
  */
-public class RestfulBizHandler implements HttpRouter {
+public class RestfulRouter implements HttpRouter {
     private String routePath;
     private MethodElement methodElement;
 
@@ -27,7 +27,7 @@ public class RestfulBizHandler implements HttpRouter {
      * 构造函数
      * @param methodElement methodElement 对象
      */
-    public RestfulBizHandler(String routePath, MethodElement methodElement){
+    public RestfulRouter(String routePath, MethodElement methodElement){
         this.routePath = routePath;
         this.methodElement = methodElement;
     }

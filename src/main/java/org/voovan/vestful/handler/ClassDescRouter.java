@@ -19,7 +19,7 @@ import java.io.UnsupportedEncodingException;
  * WebSite: https://github.com/helyho/Vestful
  * Licence: Apache v2 License
  */
-public class ClassDescHandler implements HttpRouter {
+public class ClassDescRouter implements HttpRouter {
     private ClassElement classElement;
     private String htmlContent;
 
@@ -27,7 +27,7 @@ public class ClassDescHandler implements HttpRouter {
      * 构造函数
      * @param classElement ClassElement 对象
      */
-    public ClassDescHandler(ClassElement classElement) {
+    public ClassDescRouter(ClassElement classElement) {
         this.classElement = classElement;
         try {
             this.htmlContent = new String(TFile.loadResource("ClassDesc.html"),"UTF-8");

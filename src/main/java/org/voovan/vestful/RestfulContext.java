@@ -3,9 +3,9 @@ package org.voovan.vestful;
 import org.voovan.http.server.HttpServer;
 import org.voovan.vestful.dto.ClassElement;
 import org.voovan.vestful.dto.MethodElement;
-import org.voovan.vestful.handler.ClassDescHandler;
-import org.voovan.vestful.handler.RestfulBizHandler;
-import org.voovan.vestful.handler.MethodDescHandler;
+import org.voovan.vestful.handler.ClassDescRouter;
+import org.voovan.vestful.handler.RestfulRouter;
+import org.voovan.vestful.handler.MethodDescRouter;
 import org.voovan.tools.TFile;
 import org.voovan.tools.TObject;
 import org.voovan.tools.TReflect;
@@ -64,10 +64,10 @@ public class RestfulContext {
             for(MethodElement methodElement : classElemenet.getMethodElements()) {
                 //增加路由控制
                 String httpRoute = route+"/"+methodElement.getName();
-                server.otherMethod(methodElement.getHttpMethod(), httpRoute, new RestfulBizHandler(httpRoute,methodElement));
-                server.otherMethod("GET", httpRoute+"!", new MethodDescHandler(methodElement));
+                server.otherMethod(methodElement.getHttpMethod(), httpRoute, new RestfulRouter(httpRoute,methodElement));
+                server.otherMethod("GET", httpRoute+"!", new MethodDescRouter(methodElement));
             }
-            server.otherMethod("GET", route+"!", new ClassDescHandler(classElemenet));
+            server.otherMethod("GET", route+"!", new ClassDescRouter(classElemenet));
         }
     }
 }
