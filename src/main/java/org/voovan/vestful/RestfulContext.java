@@ -63,9 +63,9 @@ public class RestfulContext {
             String route = classElemenet.getRoute();
             for(MethodElement methodElement : classElemenet.getMethodElements()) {
                 //增加路由控制
-                String httpRoute = route+"/"+methodElement.getName();
-                server.otherMethod(methodElement.getHttpMethod(), httpRoute, new RestfulRouter(httpRoute,methodElement));
-                server.otherMethod("GET", httpRoute+"!", new MethodDescRouter(methodElement));
+                String httpRoutePath = route+"/"+methodElement.getName();
+                server.otherMethod(methodElement.getHttpMethod(), httpRoutePath, new RestfulRouter(httpRoutePath,methodElement));
+                server.otherMethod("GET", httpRoutePath+"!", new MethodDescRouter(methodElement));
             }
             server.otherMethod("GET", route+"!", new ClassDescRouter(classElemenet));
         }
