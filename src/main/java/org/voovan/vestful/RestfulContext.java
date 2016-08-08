@@ -1,5 +1,6 @@
 package org.voovan.vestful;
 
+import org.voovan.http.server.HttpModule;
 import org.voovan.http.server.HttpServer;
 import org.voovan.vestful.dto.ClassElement;
 import org.voovan.vestful.dto.MethodElement;
@@ -28,7 +29,7 @@ import java.util.Map;
  * WebSite: https://github.com/helyho/Vestful
  * Licence: Apache v2 License
  */
-public class RestfulContext {
+public class RestfulContext extends HttpModule{
 
     /**
      * 读取 Restful 接口的配置文件
@@ -38,7 +39,7 @@ public class RestfulContext {
 
         List<ClassElement> classElements = new ArrayList<ClassElement>();
         try {
-            byte[] fileContent = TFile.loadFileFromContextPath("/conf/vestful.json");
+            byte[] fileContent = TFile.loadFileFromContextPath("conf/vestful.json");
             List<Map<String, Object>> classConfigs = TObject.cast(JSON.parse(new String(fileContent, "UTF-8")));
             for (Map<String, Object> classConfig : classConfigs) {
                 //通过反射构造ClassElement 元素
@@ -48,8 +49,8 @@ public class RestfulContext {
                 //增加类元素到 List
                 classElements.add(classElement);
             }
-        }catch(UnsupportedEncodingException | ParseException | ReflectiveOperationException e){
-            Logger.error("Load /conf/vestful.json file error.",e);
+        }catch(UnsupportedEncodingException | ParseException | ReflectiveOperationException  e) {
+            Logger.error(e);
         }
         return classElements;
     }
@@ -86,5 +87,22 @@ public class RestfulContext {
             matchRoute.append(paramElement.getName());
         }
         return matchRoute.toString();
+    }
+
+    @Override
+    public void install() {
+        List<ClassElement> classElemenets = loadConfig();
+        for (ClassElement classElemenet : classElemenets) {
+            String route = classElemenet.getRoute();
+            for(MethodElement methodElement : classElemenet.getMethodElements()) {
+                //增加路由控制
+                String httpRoutePath = route+"/"+methodElement.getName();
+                otherMethod(methodElement.getHttpMethod(), httpRoutePath, new RestfulRouter(httpRoutePath,methodElement));
+                otherMethod(methodElement.getHttpMethod(), getParamPath(httpRoutePath,methodElement), new RestfulRouter(httpRoutePath,methodElement));
+                otherMethod("GET", httpRoutePath+"!", new MethodDescRouter(methodElement));
+            }
+
+            otherMethod("GET", route+"!", new ClassDescRouter(classElemenet));
+        }
     }
 }
