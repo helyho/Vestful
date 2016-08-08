@@ -2,8 +2,8 @@
 =======================================================================================
 #####基于 Voovan 开发的通用 Restful 服务框架。旨在为广大开发者提供一个快速、稳定、功能丰富、自产文档的 Restful 框架。目的是在完成业务实现的同时,说明文档、接口服务等同时完成。
  
-#####接口服务演示地址:[http://vestful.voovan.com/test!](http://vestful.voovan.com/test!)
-#####接口方法演示地址:[http://vestful.voovan.com/test/testWithReturnObject!](http://vestful.voovan.com/test/testWithReturnObject!)
+#####接口服务演示地址:[http://vestful.voovan.org/test!](http://vestful.voovan.org/test!)
+#####接口方法演示地址:[http://vestful.voovan.org/test/testWithReturnObject!](http://vestful.voovan.org/test/testWithReturnObject!)
 #### 特点:
  - 仅仅通过两个注解就可以自动生成完善的Restful 接口说明文档。
  - 自动识别路径中的变量、常规请求变量、URLEncode以及MUTILPART提交变量。
