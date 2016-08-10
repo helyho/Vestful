@@ -1,6 +1,7 @@
 package org.voovan.vestful.handler;
 
 import org.voovan.http.server.*;
+import org.voovan.http.server.context.WebContext;
 import org.voovan.vestful.RestfulContext;
 import org.voovan.vestful.dto.Error;
 import org.voovan.vestful.dto.MethodElement;

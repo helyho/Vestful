@@ -13,6 +13,13 @@
 ```
 #####接口服务演示地址:[http://vestful.voovan.org/test!](http://vestful.voovan.org/test!)
 #####接口方法演示地址:[http://vestful.voovan.org/test/testWithReturnObject!](http://vestful.voovan.org/test/testWithReturnObject!)
+
+#####关于部署##### 
+   - 将Vestful.jar复制到到目标 VoovanHttpServer 的 lib 目录
+   - 并按照上面的模块配置在 web.json 中进行配置
+   - 访问: http://x.x.x.x/className!
+
+
 #### 特点:
  - 仅仅通过两个注解就可以自动生成完善的Restful 接口说明文档。
  - 自动识别路径中的变量、常规请求变量、URLEncode以及MUTILPART提交变量。
