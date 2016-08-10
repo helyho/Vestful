@@ -1,7 +1,7 @@
 ![](http://git.oschina.net/uploads/images/2016/0510/122514_7d971a34_116083.jpeg)
 =======================================================================================
 #####基于 Voovan 开发的通用 Restful 服务框架。旨在为广大开发者提供一个快速、稳定、功能丰富、自产文档的 Restful 框架。目的是在完成业务实现的同时,说明文档、接口服务等同时完成。
- 
+#####这是一个 Voovan 项目的模块,需要在 Voovan HttpServer项目中添加改模块.
 #####接口服务演示地址:[http://vestful.voovan.org/test!](http://vestful.voovan.org/test!)
 #####接口方法演示地址:[http://vestful.voovan.org/test/testWithReturnObject!](http://vestful.voovan.org/test/testWithReturnObject!)
 #### 特点:
