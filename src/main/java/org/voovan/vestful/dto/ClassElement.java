@@ -12,13 +12,13 @@ import java.util.List;
 import java.util.Vector;
 
 /**
- * 类文字命名
+ * 类元素模型
  *
  * @author helyho
- *         <p>
- *         Restful Framework.
- *         WebSite: https://github.com/helyho/Vestful
- *         Licence: Apache v2 License
+ * <p>
+ * Restful Framework.
+ * WebSite: https://github.com/helyho/Vestful
+ * Licence: Apache v2 License
  */
 public class ClassElement {
     private String name;
