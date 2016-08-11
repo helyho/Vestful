@@ -14,7 +14,7 @@ import org.voovan.tools.json.JSON;
  */
 public class Error {
     private String errMsg;
-    private String currentDate = TDateTime.now();
+    private String dateTime= TDateTime.now();
 
     public Error(String errMsg){
         this.errMsg = errMsg;

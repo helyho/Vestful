@@ -61,8 +61,13 @@ public class RestfulRouter implements HttpRouter {
                         //未找到命名参数异常
                         throw new RestfulException("not found param named by "+paramElement.getName()+". ");
                     }
-                    Object paramValue = TString.toObject(value,paramElements.get(i).getClazz());
-                    methodParams[i] = paramValue;
+                    try {
+                        Object paramValue = TString.toObject(value, paramElement.getClazz());
+                        methodParams[i] = paramValue;
+                    }catch(Exception e){
+                        throw new Exception("Convert param named by [" + paramElement.getName()+"] " +
+                                "to type ["+paramElement.getClazz()+"] error: "+e.getMessage());
+                    }
                 }
 
                 //调用指定的方法
@@ -81,7 +86,7 @@ public class RestfulRouter implements HttpRouter {
             message = message.replace("\\","\\\\");
             message =  message.replace("\"","\\\"");
             if(!(e instanceof RestfulException) ){
-                message = e.getClass().getName()+" "+message;
+                message = message +", ErrorClass:["+e.getClass().getName()+"]";
             }
             result = Error.newInstance("URL ["+requestPath+"] error. Message:" + message).toString();
         }
