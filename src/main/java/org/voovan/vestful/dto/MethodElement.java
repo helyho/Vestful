@@ -32,6 +32,7 @@ public class MethodElement {
 
     public MethodElement(String route, String name, String desc, Method method, String httpMethod){
         this.route = route.endsWith("/") ? TString.removeSuffix(route) : route;
+        this.route+="/"+name;
         this.name = name;
         this.desc = desc;
         this.method = method;
