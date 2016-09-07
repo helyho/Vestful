@@ -15,6 +15,10 @@
             width: 50%;
         }
 
+        .work-break{
+            word-break:break-all
+        }
+
         body{
             padding: 20px;
         }
@@ -57,7 +61,7 @@
                     eval("var obj = " + value);
                     var jsonStr = JSON.stringify(obj,null,4);
                     jsonStr = ReplaceAll(jsonStr,' ',"&nbsp;")
-                    jsonStr = ReplaceAll(jsonStr,"\n","<br/>")
+                    jsonStr = ReplaceAll(jsonStr,"\\n","<br/>")
                     return jsonStr;
                 } catch(e){
                     return value;
@@ -96,14 +100,29 @@
             }
             urlData = urlData.substr(0,urlData.length-1);
 
+            requestNotify="<div class='uk-panel uk-panel-box uk-panel-box-primary'>"+
+                    "Request:<br>&nbsp;&nbsp;"+urlData+"</div>";
+
             $.ajax({
                 url: urlData,
                 method: methodElement.httpMethod,
                 success: function (data){
-                    requestNotify="<div class='uk-panel uk-panel-box uk-panel-box-primary'>"+
-                            "Request:<br>&nbsp;&nbsp;"+urlData+"</div>";
-                    reqsponseNotify = "<div class='uk-panel uk-panel-box uk-panel-box-success'>" +
+
+                    reqsponseNotify = "<div class='uk-panel uk-panel-box uk-panel-box-success work-break'>" +
                             "Response:<br> &nbsp;&nbsp;"+data+"</div>";
+                    UIkit.notify(reqsponseNotify, {timeout: 10000,pos:'top-right'});
+                    UIkit.notify(requestNotify, {timeout: 10000,pos:'top-right'});
+                },
+                error: function(e) {
+                    var respText = e.responseText;
+                    respText = ReplaceAll(respText,' ',"&nbsp;");
+                    respText = ReplaceAll(respText,"\\n","<br/>");
+                    eval("var errMsgObj = " + respText);
+                    var errTime = errMsgObj.dateTime;
+                    var errInfo = errMsgObj.errMsg;
+                    reqsponseNotify = "<div class='uk-panel uk-panel-box uk-panel-box-success work-break'>" +
+                            "<h3 class='uk-panel-title'>Error:</h3> &nbsp;&nbsp;["+errTime+"] "+errInfo+"</div>";
+
                     UIkit.notify(reqsponseNotify, {timeout: 10000,pos:'top-right'});
                     UIkit.notify(requestNotify, {timeout: 10000,pos:'top-right'});
                 }

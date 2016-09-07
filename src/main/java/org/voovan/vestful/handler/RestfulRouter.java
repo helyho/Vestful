@@ -65,7 +65,7 @@ public class RestfulRouter implements HttpRouter {
                         Object paramValue = TString.toObject(value, paramElement.getClazz());
                         methodParams[i] = paramValue;
                     }catch(Exception e){
-                        throw new Exception("Convert param named by [" + paramElement.getName()+"] " +
+                        throw new RestfulException("Convert param named by [" + paramElement.getName()+"] " +
                                 "to type ["+paramElement.getClazz()+"] error: "+e.getMessage());
                     }
                 }
@@ -82,13 +82,15 @@ public class RestfulRouter implements HttpRouter {
                                             httpRequest.getParameters().size()+" params");
             }
         }catch(Exception e){
+            httpResponse.protocol().setStatus(500);
+            httpResponse.protocol().setStatusCode("Invoke Error");
             String message = e.getMessage();
             message = message.replace("\\","\\\\");
             message =  message.replace("\"","\\\"");
             if(!(e instanceof RestfulException) ){
                 message = message +", ErrorClass:["+e.getClass().getName()+"]";
             }
-            result = Error.newInstance("URL ["+requestPath+"] error. Message:" + message).toString();
+            result = Error.newInstance("URL ["+requestPath+"] error. Message: " + message).toString();
         }
 
         httpResponse.body().write(result);
