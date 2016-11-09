@@ -1,6 +1,7 @@
 package org.voovan.vestful;
 
-import org.voovan.http.server.HttpServer;
+
+import org.voovan.http.server.WebServer;
 
 import java.io.UnsupportedEncodingException;
 
@@ -14,21 +15,21 @@ import java.io.UnsupportedEncodingException;
  * Licence: Apache v2 License
  */
 public class RestfulService {
-    private HttpServer httpServer;
+    private WebServer webServer;
 
     /**
      * 构造函数
      */
     public RestfulService(){
-        httpServer = HttpServer.newInstance();
+        webServer = webServer.newInstance();
     }
 
     /**
      * 启动服务
      */
     public void serve() {
-        RestfulContext.installRestful(httpServer);
-        httpServer.serve();
+        RestfulContext.installRestful(webServer);
+        webServer.serve();
     }
 
     public static void main(String[] args) throws UnsupportedEncodingException {

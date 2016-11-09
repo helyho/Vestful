@@ -4,9 +4,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+
     <groupId>org.voovan</groupId>
     <artifactId>Vestful</artifactId>
-    <version>0.8</version>
+    <version>1.0-beta-3</version>
+    <packaging>jar</packaging>
+    <name>Voovan</name>
+    <url>https://git.oschina.net/helyho/Vestful</url>
+    <description>Voovan is a java framwork and it not depends on any third-party framework.</description>
 
     <licenses>
         <license>
@@ -19,7 +24,7 @@
         <dependency>
             <groupId>org.voovan</groupId>
             <artifactId>voovan-framework</artifactId>
-            <version>1.0-alpha-2</version>
+            <version>1.0-beta-2</version>
         </dependency>
     </dependencies>
 

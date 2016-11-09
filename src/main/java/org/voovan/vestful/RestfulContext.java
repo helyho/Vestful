@@ -1,7 +1,7 @@
 package org.voovan.vestful;
 
 import org.voovan.http.server.HttpModule;
-import org.voovan.http.server.HttpServer;
+import org.voovan.http.server.WebServer;
 import org.voovan.vestful.dto.ClassElement;
 import org.voovan.vestful.dto.MethodElement;
 import org.voovan.vestful.dto.ParamElement;
@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *  Restful 上下文类
+ * Restful 上下文类
  *
  * @author helyho
  * <p>
@@ -59,7 +59,7 @@ public class RestfulContext extends HttpModule{
      * 初始化 Restful 的接口到 HttpServer 对象
      * @param server HttpServer 对象
      */
-    public static void installRestful(HttpServer server) {
+    public static void installRestful(WebServer server) {
         List<ClassElement> classElemenets = loadConfig();
         for (ClassElement classElemenet : classElemenets) {
             String route = classElemenet.getRoute();
