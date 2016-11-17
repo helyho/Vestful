@@ -2,6 +2,7 @@ package org.voovan.vestful;
 
 import org.voovan.http.server.HttpModule;
 import org.voovan.http.server.WebServer;
+import org.voovan.tools.reflect.TReflect;
 import org.voovan.vestful.dto.ClassElement;
 import org.voovan.vestful.dto.MethodElement;
 import org.voovan.vestful.dto.ParamElement;
@@ -10,7 +11,6 @@ import org.voovan.vestful.handler.RestfulRouter;
 import org.voovan.vestful.handler.MethodDescRouter;
 import org.voovan.tools.TFile;
 import org.voovan.tools.TObject;
-import org.voovan.tools.TReflect;
 import org.voovan.tools.json.JSON;
 import org.voovan.tools.log.Logger;
 
@@ -41,11 +41,12 @@ public class RestfulContext extends HttpModule{
         try {
             byte[] fileContent = TFile.loadFileFromContextPath("conf/vestful.json");
             List<Map<String, Object>> classConfigs = TObject.cast(JSON.parse(new String(fileContent, "UTF-8")));
+            //从配置中读取 restful 配置的 class
             for (Map<String, Object> classConfig : classConfigs) {
                 //通过反射构造ClassElement 元素
                 ClassElement classElement = TObject.cast(TReflect.getObjectFromMap(ClassElement.class, classConfig, true));
                 //填充方法信息
-                classElement.fillMethodInfo();
+                classElement.getMethodElement();
                 //增加类元素到 List
                 classElements.add(classElement);
             }
@@ -66,8 +67,11 @@ public class RestfulContext extends HttpModule{
             for(MethodElement methodElement : classElemenet.getMethodElements()) {
                 //增加路由控制
                 String httpRoutePath = route+"/"+methodElement.getName();
+                //注册通过 HTTP 的报文传递参数的路由
                 server.otherMethod(methodElement.getHttpMethod(), httpRoutePath, new RestfulRouter(httpRoutePath,methodElement));
+                //注册通过 url 来传递参数的路由
                 server.otherMethod(methodElement.getHttpMethod(), getParamPath(httpRoutePath,methodElement), new RestfulRouter(httpRoutePath,methodElement));
+                //注册说明页面路由
                 server.otherMethod("GET", httpRoutePath+"!", new MethodDescRouter(methodElement));
             }
 

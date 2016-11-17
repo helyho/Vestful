@@ -39,6 +39,7 @@ public class ClassDescRouter implements HttpRouter {
     @Override
     public void process(HttpRequest httpRequest, HttpResponse httpResponse) {
         String methodData = JSON.toJSON(classElement).replace("\"class ", "\"");
+        //替换类的描述 JSON 到页面
         htmlContent =  htmlContent.replaceAll(":classData",methodData);
         httpResponse.body().write(htmlContent);
     }
