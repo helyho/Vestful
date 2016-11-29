@@ -94,7 +94,7 @@ public class MethodElement {
         return method;
     }
 
-    public Object methodInvoke(Object ...args) throws ReflectiveOperationException {
+    public Object methodInvoke(Object ...args) throws Exception {
         return TReflect.invokeMethod(object, method, args);
     }
 

@@ -21,7 +21,7 @@ public class TestClass {
         return new TestResult(test1,test2);
     }
 
-    @Restful( method="GET", desc="This is a method description. test String param")
+    @Restful( method="POST", desc="This is a method description. test String param")
     public String testWithString(@Param(name="test1",desc="Param name is test1, type is String")
                                  String test1,
                                  @Param(name="test2",desc="Param name is test2. type is String")

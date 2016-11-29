@@ -62,7 +62,11 @@ public class RestfulRouter implements HttpRouter {
                         throw new RestfulException("not found param named by "+paramElement.getName()+". ");
                     }
                     try {
-                        Object paramValue = TString.toObject(value, paramElement.getClazz());
+                        //传入的"null"字符串转换成 null 对象
+                        Object paramValue = null;
+                        if(!value.equals("null")) {
+                            paramValue = TString.toObject(value, paramElement.getClazz());
+                        }
                         methodParams[i] = paramValue;
                     }catch(Exception e){
                         throw new RestfulException("Convert param named by [" + paramElement.getName()+"] " +
