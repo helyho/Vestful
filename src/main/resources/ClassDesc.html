@@ -94,7 +94,9 @@
          */
         function tryMethod(methodId){
             methodElement = classData.methodElements[methodId];
-            urlData = methodElement.route+"/";
+            manPath = window.location.pathname;
+            manPath = manPath.substr(0,manPath.lastIndexOf("/"))
+            urlData = manPath+methodElement.route+"/";
             for(idx in methodElement.paramElements){
                 urlData += $("#"+methodElement.name+"-"+methodElement.paramElements[idx].name).val()+"/"
             }
