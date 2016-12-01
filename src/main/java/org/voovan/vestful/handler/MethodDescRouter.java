@@ -41,7 +41,7 @@ public class MethodDescRouter implements HttpRouter {
     public void process(HttpRequest httpRequest, HttpResponse httpResponse) {
         String methodData = JSON.toJSON(methodElement).replace("\"class ", "\"");
         //替换方法的描述 JSON 到页面
-        htmlContent =  htmlContent.replaceAll(":methodData",methodData);
+        htmlContent =  htmlContent.replace(":methodData",methodData);
         httpResponse.body().write(htmlContent);
     }
 
