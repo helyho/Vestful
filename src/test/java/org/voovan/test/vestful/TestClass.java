@@ -1,5 +1,6 @@
 package org.voovan.test.vestful;
 
+import org.voovan.tools.json.JSON;
 import org.voovan.vestful.annotation.Param;
 import org.voovan.vestful.annotation.Restful;
 
@@ -13,6 +14,15 @@ import org.voovan.vestful.annotation.Restful;
  *         Licence: Apache v2 License
  */
 public class TestClass {
+
+    @Restful( method="GET", desc="This is a method description. test param with MoreObject")
+    public String testWithMoreObject(@Param(name="test1",desc="Param name is test1, type is String")
+                                                   String test1,
+                                           @Param(name="test2",desc="Param name is test2. type is MoreObject")
+                                                   Object ...test2){
+        return test1+" "+ JSON.toJSON(test2);
+    }
+
     @Restful( method="GET", desc="This is a method description. test return with object")
     public TestResult testWithReturnObject(@Param(name="test1",desc="Param name is test1, type is String")
                                          String test1,
