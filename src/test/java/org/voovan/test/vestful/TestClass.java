@@ -16,7 +16,7 @@ import org.voovan.vestful.annotation.Restful;
 public class TestClass {
 
     @Restful( method="GET", desc="This is a method description. test param with MoreObject")
-    public String testWithMoreObject(@Param(name="test1",desc="Param name is test1, type is String")
+    public static  String testWithMoreObject(@Param(name="test1",desc="Param name is test1, type is String")
                                                    String test1,
                                            @Param(name="test2",desc="Param name is test2. type is MoreObject")
                                                    Object ...test2){
@@ -24,7 +24,7 @@ public class TestClass {
     }
 
     @Restful( method="GET", desc="This is a method description. test return with object")
-    public TestResult testWithReturnObject(@Param(name="test1",desc="Param name is test1, type is String")
+    public static TestResult testWithReturnObject(@Param(name="test1",desc="Param name is test1, type is String")
                                          String test1,
                                  @Param(name="test2",desc="Param name is test2. type is int")
                                          int test2){
@@ -32,7 +32,7 @@ public class TestClass {
     }
 
     @Restful( method="POST", desc="This is a method description. test String param")
-    public String testWithString(@Param(name="test1",desc="Param name is test1, type is String")
+    public static String testWithString(@Param(name="test1",desc="Param name is test1, type is String")
                                  String test1,
                                  @Param(name="test2",desc="Param name is test2. type is String")
                                  String test2){
@@ -40,7 +40,7 @@ public class TestClass {
     }
 
     @Restful(method="PUT", desc="This is a method description. test int param")
-    public String testWithInt(@Param(name="test1",desc="Param name is test1. type is String")
+    public static String testWithInt(@Param(name="test1",desc="Param name is test1. type is String")
                               String test1,
                               @Param(name="test2",desc="Param name is test2. type is int")
                               int test2){
@@ -48,7 +48,7 @@ public class TestClass {
     }
 
     @Restful(method="LOCK", desc="This is a method description. test float param")
-    public String testWithFloat(@Param(name="test1")
+    public static String testWithFloat(@Param(name="test1")
                                 String test1,
                                 @Param(name="test2")
                                 float test2){
@@ -56,7 +56,7 @@ public class TestClass {
     }
 
     @Restful(method="LOCK", desc="This is a method description. test double param")
-    public String testWithDouble(@Param(name="test1",desc="Param name is test1. type is String")
+    public static String testWithDouble(@Param(name="test1",desc="Param name is test1. type is String")
                                  String test1,
                                  @Param(name="test2",desc="Param name is test2. type is double")
                                  double test2){
@@ -64,7 +64,7 @@ public class TestClass {
     }
 
     @Restful(method="LOCK", desc="This is a method description. test boolean param")
-    public String testWithBoolean(@Param(name="test1",desc="Param name is test1. type is String")
+    public static String testWithBoolean(@Param(name="test1",desc="Param name is test1. type is String")
                                   String test1,
                                   @Param(name="test2",desc="Param name is test2. type is boolean")
                                   boolean test2){
@@ -72,7 +72,7 @@ public class TestClass {
     }
 
     @Restful(method="LOCK", desc="This is a method description. test long param")
-    public String testWithLong(@Param(name="test1",desc="Param name is test1. type is String")
+    public static String testWithLong(@Param(name="test1",desc="Param name is test1. type is String")
                                String test1,
                                @Param(name="test2",desc="Param name is test2. type is long")
                                long test2){
@@ -80,7 +80,7 @@ public class TestClass {
     }
 
     @Restful(method="LOCK", desc="This is a method description. test short param")
-    public String testWithShort(@Param(name="test1",desc="Param name is test1. type is String")
+    public static String testWithShort(@Param(name="test1",desc="Param name is test1. type is String")
                                 String test1,
                                 @Param(name="test2",desc="Param name is test2. type is short")
                                 short test2){
@@ -88,7 +88,7 @@ public class TestClass {
     }
 
     @Restful(method="LOCK", desc="This is a method description. test byte param")
-    public String testWithByte(@Param(name="test1",desc="Param name is test1. type is String")
+    public static String testWithByte(@Param(name="test1",desc="Param name is test1. type is String")
                                String test1,
                                @Param(name="test2",desc="Param name is test2.  type is byte")
                                byte test2){
@@ -96,7 +96,7 @@ public class TestClass {
     }
 
     @Restful(method="LOCK", desc="This is a method description. test char param")
-    public String testWithChar(@Param(name="test1",desc="Param name is test1. type is String")
+    public static String testWithChar(@Param(name="test1",desc="Param name is test1. type is String")
                                String test1,
                                @Param(name="test2",desc="Param name is test2. type is char")
                                char test2){

@@ -8,6 +8,7 @@ import org.voovan.tools.TString;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.List;
 import java.util.Vector;
 
@@ -68,6 +69,11 @@ public class ClassElement {
         Class clazz = Class.forName(clazzName);
         Method[] methods = TReflect.getMethods(clazz);
         for(Method method : methods){
+
+            //只暴露静态方法
+            if(!Modifier.isStatic(method.getModifiers())){
+                continue;
+            }
             //读取方法的注解
             Restful restfulAnnotation = TObject.cast(method.getAnnotation(Restful.class));
             if(restfulAnnotation!=null){
@@ -106,5 +112,6 @@ public class ClassElement {
             }
         }
         return elementsInClass;
+
     }
 }

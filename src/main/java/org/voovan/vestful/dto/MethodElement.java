@@ -27,8 +27,6 @@ public class MethodElement {
 
     @NotJSON
     private Method method;
-    @NotJSON
-    private Object object;
 
     public MethodElement(String route, String name, String desc, Method method, String httpMethod){
         this.route = route.endsWith("/") ? TString.removeSuffix(route) : route;
@@ -38,11 +36,6 @@ public class MethodElement {
         this.method = method;
         this.httpMethod = httpMethod;
         paramElements = new ArrayList<ParamElement>();
-        try {
-            object = TReflect.newInstance(method.getDeclaringClass());
-        } catch (ReflectiveOperationException e) {
-            e.printStackTrace();
-        }
         returnModel = TReflect.getClazzJSONModel(method.getReturnType()).replace("\"","\'");
     }
 
@@ -95,7 +88,7 @@ public class MethodElement {
     }
 
     public Object methodInvoke(Object ...args) throws Exception {
-        return TReflect.invokeMethod(object, method, args);
+        return TReflect.invokeMethod(null, method, args);
     }
 
     public enum ElementType{
