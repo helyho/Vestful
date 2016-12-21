@@ -30,9 +30,9 @@ public class DirectObject {
      */
     @Restful( method="GET", desc="This is a method description. test return with object")
     public int createObject(
-            @Param(name="className", desc = "Class full path name.")
+            //@Param(name="className", desc = "Class full path name.")
             String className,
-            @Param(name="params", desc = "Constructor method param")
+            //@Param(name="params", desc = "Constructor method param")
             Object ...params) throws ReflectiveOperationException {
         Object object = TReflect.newInstance(className, params);
         Logger.simple(object.hashCode());

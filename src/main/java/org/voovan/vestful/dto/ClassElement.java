@@ -83,15 +83,21 @@ public class ClassElement {
                     Annotation[] annotations = annotationArray[i];
                     Class<?> paramClazz = paramTypes[i];
 
-                    //遍历方法参数注解
-                    for(Annotation annocation : annotations){
-                        if(annocation instanceof Param){
-                            Param paramAnnocation = TObject.cast(annocation);
-                            //构造参数元素
-                            ParamElement paramElement = new ParamElement(paramAnnocation.name(),paramAnnocation.desc(),paramClazz);
-                            methodElement.addParamElements(paramElement);
+                    if(annotations.length>0){
+                        //遍历方法参数注解
+                        for(Annotation annocation : annotations){
+                            if(annocation instanceof Param){
+                                Param paramAnnocation = TObject.cast(annocation);
+                                //构造参数元素
+                                ParamElement paramElement = new ParamElement(paramAnnocation.name(),paramAnnocation.desc(),paramClazz);
+                                methodElement.addParamElements(paramElement);
+                            }
                         }
+                    } else {
+                        ParamElement paramElement = new ParamElement("arg"+(i+1),"",paramClazz);
+                        methodElement.addParamElements(paramElement);
                     }
+
                 }
                 elementsInClass.add(methodElement);
             }else{

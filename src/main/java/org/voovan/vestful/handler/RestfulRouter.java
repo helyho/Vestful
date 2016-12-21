@@ -98,8 +98,10 @@ public class RestfulRouter implements HttpRouter {
             httpResponse.protocol().setStatus(500);
             httpResponse.protocol().setStatusCode("Invoke Error");
             String message = e.getMessage();
-            message = message.replace("\\","\\\\");
-            message =  message.replace("\"","\\\"");
+            if(message!=null) {
+                message = message.replace("\\", "\\\\");
+                message = message.replace("\"", "\\\"");
+            }
             if(!(e instanceof RestfulException) ){
                 message = message +", ErrorClass:["+e.getClass().getName()+"]";
             }
