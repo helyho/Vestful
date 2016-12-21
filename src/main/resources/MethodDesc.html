@@ -97,7 +97,7 @@
             manPath = manPath.substr(0,manPath.lastIndexOf("/"))
             urlData = manPath+methodElement.route+"/";
             for(idx in methodElement.paramElements){
-                urlData += $("#"+methodElement.name+"-"+methodElement.paramElements[idx].name).val()+"/"
+                urlData += encodeURI($("#"+methodElement.name+"-"+methodElement.paramElements[idx].name).val())+"/"
             }
             urlData = urlData.substr(0,urlData.length-1);
 
@@ -167,13 +167,16 @@
                                 <td>{{paramElement.name}}</td>
                                 <td>{{paramElement.clazz}}</td>
                                 <td>{{paramElement.desc}}</td>
-                                <td><input type="text" id="{{methodInfo.name}}-{{paramElement.name}}" placeholder="{{paramElement.name}}"></td>
+                                <td><input type="text" id="{{methodInfo.name}}-{{paramElement.name}}"
+                                           placeholder="{{paramElement.name}}">
+                                </td>
                             </tr>
                             </tbody>
                             <tfoot>
                             <tr>
                                 <td colspan="4" class="uk-text-right">
-                                    <input class="uk-button uk-button-primary" type="button" onclick="tryMethod()" value="Try">
+                                    <input class="uk-button uk-button-primary" type="button"
+                                           onclick="tryMethod()" value="Try">
                                 </td>
                             </tr>
                             </tfoot>

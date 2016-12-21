@@ -65,8 +65,17 @@ public class RestfulRouter implements HttpRouter {
                         //传入的"null"字符串转换成 null 对象
                         Object paramValue = null;
                         if(!value.equals("null")) {
+
+                            //如果是数组,则将参数转换成数组形式
+                            if(paramElement.getClazz().isArray() && TString.searchByRegex(value,"^\\s*\\[[\\s\\S]*\\]\\s*$").length == 0) {
+                                value="["+value+"]";
+                            }
+
+                            //转换参数为指定 Java 类型
                             paramValue = TString.toObject(value, paramElement.getClazz());
                         }
+
+                        //填充参数数组
                         methodParams[i] = paramValue;
                     }catch(Exception e){
                         throw new RestfulException("Convert param named by [" + paramElement.getName()+"] " +
