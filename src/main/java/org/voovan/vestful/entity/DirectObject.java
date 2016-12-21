@@ -116,9 +116,9 @@ public class DirectObject {
             funcTemplate.append("    }\r\n\r\n");
         }
 
-        jsTemplate = jsTemplate.replace("#CLASS_NAME#", clazz.getSimpleName());
-        jsTemplate = jsTemplate.replace("#CLASS_FULL_NAME#", className);
-        jsTemplate = jsTemplate.replace("#METHODS#", funcTemplate);
+        jsTemplate = jsTemplate.replace("T/*CLASS_NAME*/", clazz.getSimpleName());
+        jsTemplate = jsTemplate.replace("T/*CLASS_FULL_NAME*/", className);
+        jsTemplate = jsTemplate.replace("T/*METHODS*/", funcTemplate.toString().trim());
 
         return jsTemplate;
     }

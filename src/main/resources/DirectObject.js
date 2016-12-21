@@ -70,9 +70,14 @@ function formatParams(data) {
     return arr.join("&");
 }
 
-function #CLASS_NAME#() {
+
+/**
+ * 对象方法模板
+ * 为了兼容 JS 语法, 替换的模板定位为:  T/×参数名称×/
+*/
+function T/*CLASS_NAME*/() {
     objectId = null;
-    className = "#CLASS_FULL_NAME#";
+    className = "T/*CLASS_FULL_NAME*/";
     //构造器
     {
         var constructorArgsArray = Array.prototype.slice.call(arguments);
@@ -93,7 +98,7 @@ function #CLASS_NAME#() {
         release(objectId)
     }
 
-#METHODS#
+    T/*METHODS*/
 }
 
 /**
