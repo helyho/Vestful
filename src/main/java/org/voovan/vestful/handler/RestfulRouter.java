@@ -87,7 +87,7 @@ public class RestfulRouter implements HttpRouter {
 
                 //调用指定的方法
                 Object methodResult = methodElement.methodInvoke(methodParams);
-                if(methodResult.getClass().getName().startsWith("java.lang")){
+                if(methodResult!=null && methodResult.getClass().getName().startsWith("java.lang")){
                     result = methodResult.toString();
                 } else {
                     result = JSON.toJSON(methodResult);
