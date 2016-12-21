@@ -70,7 +70,7 @@ public class RestfulRouter implements HttpRouter {
 
                             //如果是数组,则将参数转换成数组形式
                             if(paramElement.getClazz().isArray() && TString.searchByRegex(value,"^\\s*\\[[\\s\\S]*\\]\\s*$").length == 0) {
-                                value="["+value+"]";
+                                value="[\""+value+"\"]";
                             }
 
                             //转换参数为指定 Java 类型

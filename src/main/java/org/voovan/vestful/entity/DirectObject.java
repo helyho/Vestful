@@ -1,6 +1,8 @@
 package org.voovan.vestful.entity;
 
 import org.voovan.tools.ObjectPool;
+import org.voovan.tools.TFile;
+import org.voovan.tools.TString;
 import org.voovan.tools.json.JSON;
 import org.voovan.tools.log.Logger;
 import org.voovan.tools.reflect.TReflect;
@@ -8,6 +10,9 @@ import org.voovan.vestful.VestfulGlobal;
 import org.voovan.vestful.annotation.Param;
 import org.voovan.vestful.annotation.Restful;
 import org.voovan.vestful.exception.RestfulException;
+
+import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Method;
 
 /**
  * 类文字命名
@@ -21,6 +26,16 @@ import org.voovan.vestful.exception.RestfulException;
 public class DirectObject {
 
     private static ObjectPool objectPool = VestfulGlobal.getObjectPool();
+    private static String jsTemplate = getJSTemplate();
+
+    public static String getJSTemplate(){
+        try {
+            return new String(TFile.loadResource("DirectObject.js"), "UTF-8");
+        }catch(UnsupportedEncodingException e){
+            Logger.error("Load javascript template file error.",e);
+            return null;
+        }
+    }
 
     /**
      * 构造一个对象
@@ -78,7 +93,33 @@ public class DirectObject {
     }
 
     @Restful( method="GET", desc="Get script of browser invoke server side object .")
-    public static String genScript(String className, int clazzPoolId){
-        return "";
+    public static String genScript(String className) throws Exception {
+
+        if(jsTemplate==null){
+            throw new RestfulException("Load javascript template file error.");
+        }
+
+        StringBuilder funcTemplate = new StringBuilder();
+        Class clazz = Class.forName(className);
+        Method[] methods = TReflect.getMethods(clazz);
+        for(Method method : methods){
+            String methodName = method.getName();
+            String funcParam = "";
+            for(int i=0; i<method.getParameters().length; i++){
+                funcParam = funcParam + "arg"+(i+1)+", ";
+            }
+            funcParam = TString.removeSuffix(funcParam.trim());
+
+            funcTemplate.append("    this."+methodName+" = function("+funcParam+") {\r\n" );
+            funcTemplate.append("        var argsArray = Array.prototype.slice.call(arguments); \r\n");
+            funcTemplate.append("        return invokeMathod(objectId, \""+methodName+"\",argsArray).text;\r\n" );
+            funcTemplate.append("    }\r\n\r\n");
+        }
+
+        jsTemplate = jsTemplate.replace("#CLASS_NAME#", clazz.getSimpleName());
+        jsTemplate = jsTemplate.replace("#CLASS_FULL_NAME#", className);
+        jsTemplate = jsTemplate.replace("#METHODS#", funcTemplate);
+
+        return jsTemplate;
     }
 }
