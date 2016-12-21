@@ -19,7 +19,7 @@ import org.voovan.vestful.annotation.Restful;
  */
 public class DirectObject {
 
-    private ObjectPool objectPool = VestfulGlobal.getObjectPool();
+    private static ObjectPool objectPool = VestfulGlobal.getObjectPool();
 
     /**
      * 构造一个对象
@@ -29,7 +29,7 @@ public class DirectObject {
      * @throws ReflectiveOperationException
      */
     @Restful( method="GET", desc="This is a method description. test return with object")
-    public int createObject(
+    public static int createObject(
             //@Param(name="className", desc = "Class full path name.")
             String className,
             //@Param(name="params", desc = "Constructor method param")
@@ -47,12 +47,12 @@ public class DirectObject {
      * @return 方法返回值
      */
     @Restful( method="GET", desc="This is a method description. test return with object")
-    public String invoke(
+    public static String invoke(
             @Param(name="pooledObjectId", desc="Object id in ObjectPool.")
             int pooledObjectId,
             @Param(name="methodName", desc="name of which method you want to invoke.")
             String methodName,
-            @Param(name="pooledObjectId", desc="Method invoke params.")
+            @Param(name="params", desc="Method invoke params.")
             Object ...params) throws ReflectiveOperationException {
         Object obj = objectPool.get(pooledObjectId);
         Object result = TReflect.invokeMethod(obj,methodName,params);
