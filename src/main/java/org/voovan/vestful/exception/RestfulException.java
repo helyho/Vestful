@@ -1,4 +1,4 @@
-package org.voovan.vestful.handler;
+package org.voovan.vestful.exception;
 
 /**
  * 类文字命名

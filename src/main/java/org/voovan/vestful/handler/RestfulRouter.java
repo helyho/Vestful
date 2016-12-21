@@ -4,6 +4,7 @@ import org.voovan.http.server.*;
 import org.voovan.http.server.context.WebContext;
 import org.voovan.vestful.RestfulContext;
 import org.voovan.vestful.dto.Error;
+import org.voovan.vestful.exception.RestfulException;
 import org.voovan.vestful.dto.MethodElement;
 import org.voovan.vestful.dto.ParamElement;
 import org.voovan.tools.TString;
@@ -97,7 +98,7 @@ public class RestfulRouter implements HttpRouter {
             }
         }catch(Exception e){
 
-            //如果是反射的异常类型,取出真是的异常
+            //如果是反射的异常类型,取出真实的异常
             if(e instanceof InvocationTargetException){
                 Throwable throwable = e.getCause();
                 e = new Exception(e.getCause());

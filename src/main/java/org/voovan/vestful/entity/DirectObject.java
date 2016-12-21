@@ -1,4 +1,4 @@
-package org.voovan.vestful.Entity;
+package org.voovan.vestful.entity;
 
 import org.voovan.tools.ObjectPool;
 import org.voovan.tools.json.JSON;
@@ -7,7 +7,6 @@ import org.voovan.tools.reflect.TReflect;
 import org.voovan.vestful.VestfulGlobal;
 import org.voovan.vestful.annotation.Param;
 import org.voovan.vestful.annotation.Restful;
-import org.voovan.vestful.handler.RestfulException;
 
 /**
  * 类文字命名
