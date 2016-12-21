@@ -7,6 +7,7 @@ import org.voovan.tools.reflect.TReflect;
 import org.voovan.vestful.VestfulGlobal;
 import org.voovan.vestful.annotation.Param;
 import org.voovan.vestful.annotation.Restful;
+import org.voovan.vestful.handler.RestfulException;
 
 /**
  * 类文字命名
@@ -28,12 +29,12 @@ public class DirectObject {
      * @return 返回新建的对象
      * @throws ReflectiveOperationException
      */
-    @Restful( method="GET", desc="This is a method description. test return with object")
+    @Restful( method="GET", desc="Create new object in server side.")
     public static int createObject(
             //@Param(name="className", desc = "Class full path name.")
             String className,
             //@Param(name="params", desc = "Constructor method param")
-            Object ...params) throws ReflectiveOperationException {
+            Object ...params) throws Exception {
         Object object = TReflect.newInstance(className, params);
         Logger.simple(object.hashCode());
         return objectPool.add(object);
@@ -46,7 +47,7 @@ public class DirectObject {
      * @param params 参数集合
      * @return 方法返回值
      */
-    @Restful( method="GET", desc="This is a method description. test return with object")
+    @Restful( method="GET", desc="Invoke Object method.")
     public static String invoke(
             @Param(name="pooledObjectId", desc="Object id in ObjectPool.")
             int pooledObjectId,
@@ -60,7 +61,8 @@ public class DirectObject {
 
     }
 
-    public String genScript(String className, int clazzPoolId){
+    @Restful( method="GET", desc="Get script of browser invoke server side object .")
+    public static String genScript(String className, int clazzPoolId){
         return "";
     }
 }

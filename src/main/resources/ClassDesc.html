@@ -109,9 +109,9 @@
                 url: urlData,
                 method: methodElement.httpMethod,
                 success: function (data){
-
                     reqsponseNotify = "<div class='uk-panel uk-panel-box uk-panel-box-success work-break'>" +
-                            "Response:<br> &nbsp;&nbsp;"+data+"</div>";
+                                            "Response:<br> &nbsp;&nbsp;"+data+
+                                      "</div>";
                     UIkit.notify(reqsponseNotify, {timeout: 10000,pos:'top-right'});
                     UIkit.notify(requestNotify, {timeout: 10000,pos:'top-right'});
                 },
@@ -122,8 +122,10 @@
                     eval("var errMsgObj = " + respText);
                     var errTime = errMsgObj.dateTime;
                     var errInfo = errMsgObj.errMsg;
-                    reqsponseNotify = "<div class='uk-panel uk-panel-box uk-panel-box-success work-break'>" +
-                            "<h3 class='uk-panel-title'>Error:</h3> &nbsp;&nbsp;["+errTime+"] "+errInfo+"</div>";
+                    reqsponseNotify = "<div class='uk-panel uk-panel-box uk-panel-box-danger work-break'>" +
+                                            "<div class='uk-text-primary'>ErrorTime: "+errTime+"</div>" +
+                                            "<div class='uk-text-danger'> "+errInfo+"</div>"+
+                                      "</div>";
 
                     UIkit.notify(reqsponseNotify, {timeout: 10000,pos:'top-right'});
                     UIkit.notify(requestNotify, {timeout: 10000,pos:'top-right'});

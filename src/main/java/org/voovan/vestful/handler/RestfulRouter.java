@@ -9,6 +9,7 @@ import org.voovan.vestful.dto.ParamElement;
 import org.voovan.tools.TString;
 import org.voovan.tools.json.JSON;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Map;
 
@@ -95,8 +96,24 @@ public class RestfulRouter implements HttpRouter {
                                             httpRequest.getParameters().size()+" params");
             }
         }catch(Exception e){
-            httpResponse.protocol().setStatus(500);
-            httpResponse.protocol().setStatusCode("Invoke Error");
+
+            //如果是反射的异常类型,取出真是的异常
+            if(e instanceof InvocationTargetException){
+                Throwable throwable = e.getCause();
+                e = new Exception(e.getCause());
+            }
+
+            //对RestfulException异常的特殊处理
+            if(e instanceof RestfulException){
+                RestfulException restfulException = (RestfulException)e;
+                httpResponse.protocol().setStatus(restfulException.getHttpStatusCode());
+                httpResponse.protocol().setStatusCode(restfulException.getHttpStatusDesc());
+            }else {
+                httpResponse.protocol().setStatus(500);
+                httpResponse.protocol().setStatusCode("Invoke Error");
+            }
+
+
             String message = e.getMessage();
             if(message!=null) {
                 message = message.replace("\\", "\\\\");
@@ -105,7 +122,7 @@ public class RestfulRouter implements HttpRouter {
             if(!(e instanceof RestfulException) ){
                 message = message +", ErrorClass:["+e.getClass().getName()+"]";
             }
-            result = Error.newInstance("URL ["+requestPath+"] error. Message: " + message).toString();
+            result = Error.newInstance("URL: "+requestPath+"\r\nMessage: " + message).toString();
         }
 
         httpResponse.body().write(result);
