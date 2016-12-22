@@ -76,26 +76,28 @@ function formatParams(data) {
  * 为了兼容 JS 语法, 替换的模板定位为:  T/×参数名称×/
 */
 function T/*CLASS_NAME*/() {
-    objectId = null;
+    this.objectId = null;
+    this.type = "ServerObject";
+
     className = "T/*CLASS_FULL_NAME*/";
     //构造器
     {
         var constructorArgsArray = Array.prototype.slice.call(arguments);
-        objectId = createObject(className, constructorArgsArray).text;
+        this.objectId = createObject(className, constructorArgsArray).text;
     }
 
     /**
      * 获取 ID
      */
     this.getId = function() {
-        return objectId;
+        return this.objectId;
     }
 
     /**
      * 释放对象
      */
     this.release = function() {
-        release(objectId)
+        release(this.objectId)
     }
 
     T/*METHODS*/

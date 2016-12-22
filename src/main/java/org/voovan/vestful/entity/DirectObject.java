@@ -2,6 +2,7 @@ package org.voovan.vestful.entity;
 
 import org.voovan.tools.ObjectPool;
 import org.voovan.tools.TFile;
+import org.voovan.tools.TObject;
 import org.voovan.tools.TString;
 import org.voovan.tools.json.JSON;
 import org.voovan.tools.log.Logger;
@@ -13,6 +14,7 @@ import org.voovan.vestful.exception.RestfulException;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
+import java.util.Map;
 
 /**
  * 类文字命名
@@ -51,7 +53,6 @@ public class DirectObject {
             @Param(name="params", desc = "Constructor method param")
             Object ...params) throws Exception {
         Object object = TReflect.newInstance(className, params);
-        Logger.simple(object.hashCode());
         return objectPool.add(object);
     }
 
@@ -74,6 +75,7 @@ public class DirectObject {
         if(obj==null){
             throw new RestfulException("Object not found, Object id: " + pooledObjectId);
         }
+        params = converParam(params);
         Object result = TReflect.invokeMethod(obj,methodName,params);
         return JSON.toJSON(result);
 
@@ -112,7 +114,7 @@ public class DirectObject {
 
             funcTemplate.append("    this."+methodName+" = function("+funcParam+") {\r\n" );
             funcTemplate.append("        var argsArray = Array.prototype.slice.call(arguments); \r\n");
-            funcTemplate.append("        return invokeMathod(objectId, \""+methodName+"\",argsArray).text;\r\n" );
+            funcTemplate.append("        return invokeMathod(this.objectId, \""+methodName+"\",argsArray).text;\r\n" );
             funcTemplate.append("    }\r\n\r\n");
         }
 
@@ -121,5 +123,31 @@ public class DirectObject {
         jsTemplate = jsTemplate.replace("T/*METHODS*/", funcTemplate.toString().trim());
 
         return jsTemplate;
+    }
+
+    /**
+     * 检查是否有对象池中的对象,如果有则转换为对象池的对象
+     * @param params
+     * @return
+     */
+    private static Object[] converParam(Object[] params){
+        for(int i=0; i<params.length; i++){
+            Object param = params[i];
+            if(param instanceof Map){
+                Map mapParam = TObject.cast(param,Map.class);
+                if(mapParam.size() == 2 &&
+                        mapParam.containsKey("objectId") &&
+                        TString.isInteger(mapParam.get("objectId").toString()) &&
+                        mapParam.containsKey("type") &&
+                        "ServerObject".equals(mapParam.get("type"))
+                ){
+                    Integer objectId = Integer.valueOf(mapParam.get("objectId").toString());
+                    if(objectPool.contains(objectId)) {
+                        params[i] = objectPool.get(objectId);
+                    }
+                }
+            }
+        }
+        return params;
     }
 }
