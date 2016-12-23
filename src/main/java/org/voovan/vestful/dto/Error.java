@@ -13,11 +13,31 @@ import org.voovan.tools.json.JSON;
  * Licence: Apache v2 License
  */
 public class Error {
+    private String errURL;
+    private String errClass;
     private String errMsg;
-    private String dateTime= TDateTime.now();
+    private String errTime= TDateTime.now();
 
-    public Error(String errMsg){
+    public Error(String errURL, String errClass, String errMsg){
         this.errMsg = errMsg;
+        this.errURL = errURL;
+        this.errClass = errClass;
+    }
+
+    public String getErrURL() {
+        return errURL;
+    }
+
+    public void setErrURL(String url) {
+        this.errURL = errURL;
+    }
+
+    public String getErrClass() {
+        return errClass;
+    }
+
+    public void setErrClass(String errClass) {
+        this.errClass = errClass;
     }
 
     public String getErrMsg() {
@@ -33,7 +53,7 @@ public class Error {
         return JSON.toJSON(this);
     }
 
-    public static Error newInstance(String errMsg){
-        return new Error(errMsg);
+    public static Error newInstance(String url, String errClass, String errMsg){
+        return new Error(url,errClass,errMsg);
     }
 }

@@ -64,7 +64,7 @@ function invokeMathod(v_objectId, v_methodName, v_params) {
  * 在服务端构造对象
  */
 function release(v_objectId) {
-    return ajax({
+     var response =  ajax({
         url: "/DirectObject/release", //请求地址
         type: "get", //请求方式
         data: { pooledObjectId: v_objectId }, //请求参数
@@ -127,8 +127,10 @@ function ajax(options) {
             if (status >= 200 && status < 300) {
                 responseText = xhr.responseText;
                 responseXML = xhr.responseXML;
+            }else{
+                throw new Error("["+xhr.statusText+"] "+xhr.responseText);
             }
-            return { "code": status, "statusText": xhr.statusText, "text": responseText, "xml": responseXML };
+            return { "statusCode": status, "statusText": xhr.statusText, "text": responseText, "xml": responseXML };
         }
     }
 }

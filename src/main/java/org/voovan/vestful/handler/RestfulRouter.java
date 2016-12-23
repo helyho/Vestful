@@ -100,7 +100,7 @@ public class RestfulRouter implements HttpRouter {
         }catch(Exception e){
 
             httpResponse.protocol().setStatus(500);
-            httpResponse.protocol().setStatusCode("Invoke Error");
+            httpResponse.protocol().setStatusCode("InvokeError");
 
             //如果是反射的异常类型,取出真实的异常
             if(e instanceof InvocationTargetException){
@@ -125,10 +125,8 @@ public class RestfulRouter implements HttpRouter {
                 message = message.replace("\\", "\\\\");
                 message = message.replace("\"", "\\\"");
             }
-            if(!(e instanceof RestfulException) ){
-                message = message +", ErrorClass:["+e.getClass().getName()+"]";
-            }
-            result = Error.newInstance("URL: "+requestPath+"\r\nMessage: " + message).toString();
+
+            result = Error.newInstance(requestPath, e.getClass().getName(), message).toString();
         }
 
         httpResponse.body().write(result);

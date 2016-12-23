@@ -123,12 +123,13 @@
                 error: function(e) {
                     var respText = e.responseText;
                     eval("var errMsgObj = " + respText);
-                    var errTime = errMsgObj.dateTime;
+                    var errTime = errMsgObj.errTime;
                     var errInfo = toHtml(errMsgObj.errMsg);
                     reqsponseNotify = "<div class='uk-panel uk-panel-box uk-panel-box-danger work-break'>" +
-                        "<div class='uk-text-primary'>ErrorTime: "+errTime+"</div>" +
-                        "<div class='uk-text-danger'> "+errInfo+"</div>"+
-                        "</div>";
+                                            "Error:<br> " +
+                                            "<div class='uk-text-primary'>"+errTime+"</div>" +
+                                            "<div class='uk-text-danger'> "+errInfo+"</div>"+
+                                        "</div>";
 
                     UIkit.notify(reqsponseNotify, {timeout: 10000,pos:'top-right'});
                     UIkit.notify(requestNotify, {timeout: 10000,pos:'top-right'});
