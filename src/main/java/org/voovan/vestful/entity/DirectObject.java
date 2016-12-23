@@ -59,15 +59,15 @@ public class DirectObject {
             String className,
             @Param(name="params", desc = "Constructor method param")
             Object ...params) throws Exception {
-        boolean isMatch = true;
+
         for(String packageRegex : packageControl){
             if (TString.regexMatch(className, packageRegex) == 0){
-                isMatch = false;
+                throw new RestfulException("Class " + className + " not found",521,"ClassNotFound");
             }else{
-                isMatch = true;
                 break;
             }
         }
+
         Object object = TReflect.newInstance(className, params);
         return objectPool.add(object);
     }
@@ -89,7 +89,7 @@ public class DirectObject {
             Object ...params) throws Exception {
         Object obj = objectPool.get(pooledObjectId);
         if(obj==null){
-            throw new RestfulException("Object not found, Object id: " + pooledObjectId);
+            throw new RestfulException("Object not found, Object id: " + pooledObjectId,522,"ObjectNotFound");
         }
         params = converParam(params);
         Object result = TReflect.invokeMethod(obj,methodName,params);
@@ -116,7 +116,7 @@ public class DirectObject {
             String className) throws Exception {
 
         if(jsTemplate==null){
-            throw new RestfulException("Load javascript template file error.");
+            throw new RestfulException("Load javascript template file error.",523,"ScriptTemplateNotFound");
         }
 
         StringBuilder funcTemplate = new StringBuilder();

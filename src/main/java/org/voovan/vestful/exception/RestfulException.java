@@ -17,17 +17,17 @@ public class RestfulException extends Exception {
     public RestfulException(String message){
         super(message);
     }
+
     public RestfulException(String message,int httpStatusCode,String httpStatusDesc){
         super(message);
         this.httpStatusCode = httpStatusCode;
         this.httpStatusDesc = httpStatusDesc;
     }
+
     public RestfulException(Exception exception){
         super(exception);
         this.httpStatusDesc = exception.getMessage();
     }
-
-
 
     public int getHttpStatusCode() {
         return httpStatusCode;

@@ -2,6 +2,7 @@ package org.voovan.vestful.handler;
 
 import org.voovan.http.server.*;
 import org.voovan.http.server.context.WebContext;
+import org.voovan.tools.log.Logger;
 import org.voovan.vestful.RestfulContext;
 import org.voovan.vestful.dto.Error;
 import org.voovan.vestful.exception.RestfulException;
@@ -101,19 +102,17 @@ public class RestfulRouter implements HttpRouter {
             //如果是反射的异常类型,取出真实的异常
             if(e instanceof InvocationTargetException){
                 Throwable throwable = e.getCause();
-                e = new Exception(e.getCause());
-            }
 
-            //对RestfulException异常的特殊处理
-            if(e instanceof RestfulException){
-                RestfulException restfulException = (RestfulException)e;
-                httpResponse.protocol().setStatus(restfulException.getHttpStatusCode());
-                httpResponse.protocol().setStatusCode(restfulException.getHttpStatusDesc());
-            }else {
-                httpResponse.protocol().setStatus(500);
-                httpResponse.protocol().setStatusCode("Invoke Error");
+                //对RestfulException异常的特殊处理
+                if(throwable instanceof RestfulException){
+                    RestfulException restfulException = (RestfulException)throwable;
+                    httpResponse.protocol().setStatus(restfulException.getHttpStatusCode());
+                    httpResponse.protocol().setStatusCode(restfulException.getHttpStatusDesc());
+                }else{
+                    httpResponse.protocol().setStatus(500);
+                    httpResponse.protocol().setStatusCode("Invoke Error");
+                }
             }
-
 
             String message = e.getMessage();
             if(message!=null) {
