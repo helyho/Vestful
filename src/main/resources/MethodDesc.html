@@ -48,10 +48,18 @@
     <script language="JavaScript">
         var methodData = :methodData;
 
-        function ReplaceAll(str, sptr, sptr1) {
+        function replaceAll(str, sptr, sptr1) {
             while (str.indexOf(sptr) >= 0) {
                 str = str.replace(sptr, sptr1);
             }
+            return str;
+        }
+
+        function toHtml(str){
+            str = replaceAll(str,' ',"&nbsp;")
+            str = replaceAll(str,"\n","<br/>")
+            str = replaceAll(str,"\\n","<br/>")
+            str = replaceAll(str,"\"","&quot;")
             return str;
         }
 
@@ -59,9 +67,7 @@
             Vue.filter('formatJSON', function (value) {
                 try {
                     eval("var obj = " + value);
-                    var jsonStr = JSON.stringify(obj, null, 4);
-                    jsonStr = ReplaceAll(jsonStr, ' ', "&nbsp;")
-                    jsonStr = ReplaceAll(jsonStr, "\\n", "<br/>")
+                    var jsonStr = toHtml(JSON.stringify(obj, null, 4));
                     return jsonStr;
                 } catch (e) {
                     return value;
@@ -116,11 +122,9 @@
                 },
                 error: function(e) {
                     var respText = e.responseText;
-                    respText = ReplaceAll(respText,' ',"&nbsp;");
-                    respText = ReplaceAll(respText,"\\n","<br/>");
                     eval("var errMsgObj = " + respText);
                     var errTime = errMsgObj.dateTime;
-                    var errInfo = errMsgObj.errMsg;
+                    var errInfo = toHtml(errMsgObj.errMsg);
                     reqsponseNotify = "<div class='uk-panel uk-panel-box uk-panel-box-danger work-break'>" +
                         "<div class='uk-text-primary'>ErrorTime: "+errTime+"</div>" +
                         "<div class='uk-text-danger'> "+errInfo+"</div>"+

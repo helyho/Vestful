@@ -60,16 +60,19 @@ public class DirectObject {
             @Param(name="params", desc = "Constructor method param")
             Object ...params) throws Exception {
 
+        boolean createEnable = false;
         for(String packageRegex : packageControl){
-            if (TString.regexMatch(className, packageRegex) == 0){
-                throw new RestfulException("Class " + className + " not found",521,"ClassNotFound");
-            }else{
-                break;
+            if (TString.regexMatch(className, packageRegex) != 0){
+                createEnable = true;
             }
         }
 
-        Object object = TReflect.newInstance(className, params);
-        return objectPool.add(object);
+        if(createEnable) {
+            Object object = TReflect.newInstance(className, params);
+            return objectPool.add(object);
+        }else{
+            throw new RestfulException("Class " + className + " not found",521,"ClassNotFound");
+        }
     }
 
     /**
@@ -138,11 +141,13 @@ public class DirectObject {
             funcTemplate.append("    }\r\n\r\n");
         }
 
-        jsTemplate = jsTemplate.replace("T/*CLASS_NAME*/", clazz.getSimpleName());
-        jsTemplate = jsTemplate.replace("T/*CLASS_FULL_NAME*/", className);
-        jsTemplate = jsTemplate.replace("T/*METHODS*/", funcTemplate.toString().trim());
+        String returnTemplate = jsTemplate;
 
-        return jsTemplate;
+        returnTemplate = returnTemplate.replace("T/*CLASS_NAME*/", clazz.getSimpleName());
+        returnTemplate = returnTemplate.replace("T/*CLASS_FULL_NAME*/", className);
+        returnTemplate = returnTemplate.replace("T/*METHODS*/", funcTemplate.toString().trim());
+
+        return returnTemplate;
     }
 
     /**

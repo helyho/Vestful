@@ -81,7 +81,7 @@ public class RestfulRouter implements HttpRouter {
                         //填充参数数组
                         methodParams[i] = paramValue;
                     }catch(Exception e){
-                        throw new RestfulException("Convert param named by [" + paramElement.getName()+"] " +
+                        throw new RestfulException("Convert which param named by [" + paramElement.getName()+"] " +
                                 "to type ["+paramElement.getClazz()+"] error: "+e.getMessage());
                     }
                 }
@@ -99,9 +99,13 @@ public class RestfulRouter implements HttpRouter {
             }
         }catch(Exception e){
 
+            httpResponse.protocol().setStatus(500);
+            httpResponse.protocol().setStatusCode("Invoke Error");
+
             //如果是反射的异常类型,取出真实的异常
             if(e instanceof InvocationTargetException){
                 Throwable throwable = e.getCause();
+                e = (Exception) throwable;
 
                 //对RestfulException异常的特殊处理
                 if(throwable instanceof RestfulException){
@@ -109,9 +113,11 @@ public class RestfulRouter implements HttpRouter {
                     httpResponse.protocol().setStatus(restfulException.getHttpStatusCode());
                     httpResponse.protocol().setStatusCode(restfulException.getHttpStatusDesc());
                 }else{
-                    httpResponse.protocol().setStatus(500);
-                    httpResponse.protocol().setStatusCode("Invoke Error");
+
+                    throwable.printStackTrace();
                 }
+            }else{
+                e.printStackTrace();
             }
 
             String message = e.getMessage();
