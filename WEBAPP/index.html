@@ -6,13 +6,27 @@
 </head>
 <script lang="javascript" src="/DirectObject/genScript/java.util.ArrayList"></script>
 <script lang="javascript" >
-    arraylist = null;
+    arraylist1 = null;
+    arraylist2 = null;
     function test(){
-        if(arraylist == null){
-           arraylist = new ArrayList();
+        if(arraylist1 == null){
+           arraylist1 = new ArrayList();
         }
-        arraylist.add("aaaa");
-        console.log(arraylist.size())
+
+        if(arraylist2 == null){
+            arraylist2 = new ArrayList();
+        }
+        console.log("add item into arraylist1");
+        arraylist1.add("aaaa");
+        console.log("add item into arraylist2");
+        arraylist2.add("bbbb");
+
+        console.log("arraylist1 current size: " + arraylist1.size());
+        console.log("arraylist2 current size: " + arraylist2.size());
+
+        console.log("add arraylist2 all item into arraylist1");
+        arraylist1.addAll(arraylist2)
+        console.log("arraylist1 current size: " + arraylist1.size());
     }
 
 </script>
