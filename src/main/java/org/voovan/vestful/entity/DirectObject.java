@@ -14,6 +14,8 @@ import org.voovan.vestful.exception.RestfulException;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,6 +31,11 @@ public class DirectObject {
 
     private static ObjectPool objectPool = VestfulGlobal.getObjectPool();
     private static String jsTemplate = getJSTemplate();
+    private static ArrayList<String> packageControl = new ArrayList<String>();
+
+    public static void setPackageControl(ArrayList<String> packageControlList){
+        packageControl = packageControlList;
+    }
 
     public static String getJSTemplate(){
         try {
@@ -52,6 +59,15 @@ public class DirectObject {
             String className,
             @Param(name="params", desc = "Constructor method param")
             Object ...params) throws Exception {
+        boolean isMatch = true;
+        for(String packageRegex : packageControl){
+            if (TString.regexMatch(className, packageRegex) == 0){
+                isMatch = false;
+            }else{
+                isMatch = true;
+                break;
+            }
+        }
         Object object = TReflect.newInstance(className, params);
         return objectPool.add(object);
     }

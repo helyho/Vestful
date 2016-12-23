@@ -1,5 +1,6 @@
 package org.voovan.vestful;
 
+import org.omg.CORBA.TRANSACTION_REQUIRED;
 import org.voovan.http.server.HttpModule;
 import org.voovan.http.server.WebServer;
 import org.voovan.tools.reflect.TReflect;
@@ -13,6 +14,7 @@ import org.voovan.tools.json.JSON;
 import org.voovan.tools.log.Logger;
 
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Method;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,15 +45,6 @@ public class RestfulContext extends HttpModule{
         try {
             byte[] fileContent = TFile.loadFileFromContextPath("conf/vestful.json");
             List<Map<String, Object>> classConfigs = TObject.cast(JSON.parse(new String(fileContent, "UTF-8")));
-
-            //默认增加 DirectObject 对象调用
-            addClassConfig(classConfigs,
-                    "DirectObject",
-                    "/DirectObject/",
-                    "org.voovan.vestful.entity.DirectObject",
-                    "Restful API for DirectObject");
-
-
             //从配置中读取 restful 配置的 class
             for (Map<String, Object> classConfig : classConfigs) {
                 //通过反射构造ClassElement 元素
@@ -60,8 +53,25 @@ public class RestfulContext extends HttpModule{
                 classElement.getMethodElement();
                 //增加类元素到 List
                 classElements.add(classElement);
+
+                Map<String,Object> paramsMap = (Map<String,Object>)classConfig.get("params");
+                if(paramsMap!=null) {
+                    for (Map.Entry<String, Object> entry : paramsMap.entrySet()) {
+                        try {
+                            Class clazz = Class.forName(classConfig.get("classPath").toString());
+                            String key = entry.getKey().toString();
+                            //根据 Java 命名规范,首字母转换成大写的
+                            String first = key.substring(0, 1).toUpperCase();
+                            String rest = key.substring(1, key.length());
+                            String methodName = new StringBuffer(first).append(rest).toString();
+                            Method method = TReflect.findMethod(clazz, "set"+methodName, entry.getValue().getClass());
+                            TReflect.invokeMethod(null, method, entry.getValue());
+                        } catch (Exception e) {
+                        }
+                    }
+                }
             }
-        }catch(UnsupportedEncodingException | ParseException | ReflectiveOperationException  e) {
+        }catch(Exception e) {
             Logger.error(e);
         }
         return classElements;
