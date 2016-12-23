@@ -1,6 +1,6 @@
 /**
  * 对象方法模板
- * 为了兼容 JS 语法, 替换的模板定位为:  T/×参数名称×/
+ * 为了兼容 JS 语法, 替换的模板参数定位采用: T/×参数名称×/
 */
 function T/*CLASS_NAME*/() {
     this.objectId = null;
