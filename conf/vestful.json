@@ -13,7 +13,8 @@
     "desc": "Restful API for DirectObject",
     "params": {
       "packageControl": [
-        "java.*"
+        "java.*",
+        "org.*"
       ]
     }
   }

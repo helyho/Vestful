@@ -14,9 +14,11 @@ import org.voovan.tools.json.JSON;
 import org.voovan.tools.log.Logger;
 
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -60,12 +62,28 @@ public class RestfulContext extends HttpModule{
                         try {
                             Class clazz = Class.forName(classConfig.get("classPath").toString());
                             String key = entry.getKey().toString();
+                            Object value = entry.getValue();
                             //根据 Java 命名规范,首字母转换成大写的
                             String first = key.substring(0, 1).toUpperCase();
                             String rest = key.substring(1, key.length());
                             String methodName = new StringBuffer(first).append(rest).toString();
-                            Method method = TReflect.findMethod(clazz, "set"+methodName, entry.getValue().getClass());
-                            TReflect.invokeMethod(null, method, entry.getValue());
+                            Class valueClass = value.getClass();
+
+                            Method method = null;
+                            //拼接继承和实现的接口
+                            Class<?>[] impAndExtClass = TReflect.getAllExtendAndInterfaceClass(valueClass);
+                            for(Class interfaceClass : impAndExtClass) {
+                                try {
+                                    method = TReflect.findMethod(clazz, "set" + methodName, interfaceClass);
+                                    if(method!=null){
+                                        TReflect.invokeMethod(null, method, entry.getValue());
+                                        break;
+                                    }
+                                }catch(Exception e){
+                                    continue;
+                                }
+                            }
+
                         } catch (Exception e) {
                         }
                     }

@@ -31,9 +31,9 @@ public class DirectObject {
 
     private static ObjectPool objectPool = VestfulGlobal.getObjectPool();
     private static String jsTemplate = getJSTemplate();
-    private static ArrayList<String> packageControl = new ArrayList<String>();
+    private static List<String> packageControl = new ArrayList<String>();
 
-    public static void setPackageControl(ArrayList<String> packageControlList){
+    public static void setPackageControl(List<String> packageControlList){
         packageControl = packageControlList;
     }
 
