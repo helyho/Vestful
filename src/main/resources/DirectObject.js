@@ -83,14 +83,7 @@ function T/*CLASS_NAME*/() {
     //构造器
     {
         var constructorArgsArray = Array.prototype.slice.call(arguments);
-        this.objectId = createObject(className, constructorArgsArray).text;
-    }
-
-    /**
-     * 获取 ID
-     */
-    this.getId = function() {
-        return this.objectId;
+        this.objectId = parseInt(createObject(className, constructorArgsArray).text);
     }
 
     /**
@@ -120,7 +113,7 @@ function createObject(v_className, v_params) {
  * 调用对象的某个方法
  */
 function invokeMathod(v_objectId, v_methodName, v_params) {
-    if (objectId == null) {
+    if (v_objectId == null) {
         throw new error("this object is not instance");
     }
 

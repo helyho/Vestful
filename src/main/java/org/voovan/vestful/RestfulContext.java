@@ -43,8 +43,15 @@ public class RestfulContext extends HttpModule{
         try {
             byte[] fileContent = TFile.loadFileFromContextPath("conf/vestful.json");
             List<Map<String, Object>> classConfigs = TObject.cast(JSON.parse(new String(fileContent, "UTF-8")));
-            addClassConfig(classConfigs,"DirectObject","/DirectObject/",
-                    "org.voovan.vestful.entity.DirectObject","Restful API for DirectObject");
+
+            //默认增加 DirectObject 对象调用
+            addClassConfig(classConfigs,
+                    "DirectObject",
+                    "/DirectObject/",
+                    "org.voovan.vestful.entity.DirectObject",
+                    "Restful API for DirectObject");
+
+
             //从配置中读取 restful 配置的 class
             for (Map<String, Object> classConfig : classConfigs) {
                 //通过反射构造ClassElement 元素

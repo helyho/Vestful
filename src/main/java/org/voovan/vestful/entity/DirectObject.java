@@ -95,7 +95,9 @@ public class DirectObject {
     }
 
     @Restful( method="GET", desc="Get script of browser invoke server side object .")
-    public static String genScript(String className) throws Exception {
+    public static String genScript(
+            @Param(name="className", desc="Which class want to generate javascript code.")
+            String className) throws Exception {
 
         if(jsTemplate==null){
             throw new RestfulException("Load javascript template file error.");
@@ -114,7 +116,9 @@ public class DirectObject {
 
             funcTemplate.append("    this."+methodName+" = function("+funcParam+") {\r\n" );
             funcTemplate.append("        var argsArray = Array.prototype.slice.call(arguments); \r\n");
-            funcTemplate.append("        return invokeMathod(this.objectId, \""+methodName+"\",argsArray).text;\r\n" );
+            funcTemplate.append("        var currentTime = new Date().getTime(); \n");
+            funcTemplate.append("        var resultText = invokeMathod(this.objectId, \""+methodName+"\",argsArray).text;\r\n" );
+            funcTemplate.append("        return eval('t' + currentTime + '=' + resultText)\r\n" );
             funcTemplate.append("    }\r\n\r\n");
         }
 

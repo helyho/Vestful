@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DirectObject test</title>
+</head>
+<script lang="javascript" src="/DirectObject/genScript/java.util.ArrayList"></script>
+<script lang="javascript" >
+    arraylist = null;
+    function test(){
+        if(arraylist == null){
+           arraylist = new ArrayList();
+        }
+        arraylist.add("aaaa");
+        console.log(arraylist.size())
+    }
+
+</script>
+<body>
+<input type="button" onclick="test()" value="Test"/>
+</body>
+</html>

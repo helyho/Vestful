@@ -22,6 +22,12 @@ public class RestfulException extends Exception {
         this.httpStatusCode = httpStatusCode;
         this.httpStatusDesc = httpStatusDesc;
     }
+    public RestfulException(Exception exception){
+        super(exception);
+        this.httpStatusDesc = exception.getMessage();
+    }
+
+
 
     public int getHttpStatusCode() {
         return httpStatusCode;
