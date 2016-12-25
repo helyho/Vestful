@@ -51,17 +51,15 @@ public class RestfulContext extends HttpModule{
                 //增加类元素到 List
                 classElements.add(classElement);
 
+                //通过params配置使用对应的 set 方法设置参数
                 Map<String,Object> paramsMap = (Map<String,Object>)classConfig.get("params");
                 if(paramsMap!=null) {
                     for (Map.Entry<String, Object> entry : paramsMap.entrySet()) {
                         try {
                             Class clazz = Class.forName(classConfig.get("classPath").toString());
-                            String key = entry.getKey().toString();
-                            Object value = entry.getValue();
-
                             //根据 Java 命名规范,首字母转换成大写的
-                            String methodName = TString.upperFirstCase(key);
-                            TReflect.invokeMethod(clazz, "set" + methodName, value);
+                            String methodName = TString.uppercaseFirstChar(entry.getKey().toString());
+                            TReflect.invokeMethod(clazz, "set" + methodName, entry.getValue());
 
                         } catch (Exception e) {
                         }
