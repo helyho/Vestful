@@ -13,6 +13,9 @@ public class TestResult {
     private String test1;
     private int test2;
 
+    public TestResult(){
+    }
+
     public TestResult(String test1, int test2){
         this.test1 = test1;
         this.test2 = test2;

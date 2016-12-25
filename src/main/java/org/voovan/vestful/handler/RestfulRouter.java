@@ -14,6 +14,7 @@ import org.voovan.vestful.dto.ParamElement;
 import org.voovan.vestful.exception.RestfulException;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -72,7 +73,8 @@ public class RestfulRouter implements HttpRouter {
                         if(!value.equals("null")) {
 
                             //如果是数组,则将参数转换成数组形式
-                            if(paramElement.getClazz().isArray() && TString.searchByRegex(value,"^\\s*\\[[\\s\\S]*\\]\\s*$").length == 0) {
+                            if( (paramElement.getClazz().isArray() || paramElement.getClazz() == Collections.class) &&
+                                    TString.searchByRegex(value,"^\\s*\\[[\\s\\S]*\\]\\s*$").length == 0) {
                                 value="[\""+value+"\"]";
                             }
 

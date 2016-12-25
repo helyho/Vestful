@@ -4,6 +4,9 @@ import org.voovan.tools.json.JSON;
 import org.voovan.vestful.annotation.Param;
 import org.voovan.vestful.annotation.Restful;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 /**
  * 类文字命名
  *
@@ -15,12 +18,36 @@ import org.voovan.vestful.annotation.Restful;
  */
 public class TestClass {
 
+    @Restful( method="GET", desc="This is a method description. test param with TestResult object")
+    public static  String testWithObject(@Param(name="test1",desc="Param name is test1, type is String")
+                                              String test1,
+                                            @Param(name="test2",desc="Param name is test2. type is TestResult object")
+                                              TestResult test2) {
+        return "Param1=" + test1 + " , Param2=" + JSON.toJSON(test2);
+    }
+
     @Restful( method="GET", desc="This is a method description. test param with MoreObject")
-    public static  String testWithMoreObject(@Param(name="test1",desc="Param name is test1, type is String")
+    public static  String testWithArray(@Param(name="test1",desc="Param name is test1, type is String")
                                                    String test1,
-                                           @Param(name="test2",desc="Param name is test2. type is MoreObject")
+                                           @Param(name="test2",desc="Param name is test2. type is Array")
                                                    Object ...test2){
-        return test1+" "+ JSON.toJSON(test2);
+        return "Param1="+test1+" , Param2="+JSON.toJSON(test2);
+    }
+
+    @Restful( method="GET", desc="This is a method description. test param with List")
+    public static  String testWithList(@Param(name="test1",desc="Param name is test1, type is String")
+                                                String test1,
+                                            @Param(name="test2",desc="Param name is test2. type is List")
+                                                ArrayList test2){
+        return "Param1="+test1+" , Param2="+JSON.toJSON(test2);
+    }
+
+    @Restful( method="GET", desc="This is a method description. test param with Map")
+    public static  String testWithMap(@Param(name="test1",desc="Param name is test1, type is String")
+                                                     String test1,
+                                             @Param(name="test2",desc="Param name is test2. type is Map")
+                                              Map test2){
+        return "Param1="+test1+" , Param2="+JSON.toJSON(test2);
     }
 
     @Restful( method="GET", desc="This is a method description. test return with object")
