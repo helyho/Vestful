@@ -113,6 +113,7 @@ public class RestfulContext extends HttpModule{
 
     @Override
     public void install() {
+
         List<ClassElement> classElemenets = loadConfig();
         for (ClassElement classElemenet : classElemenets) {
             String route = classElemenet.getRoute();
@@ -122,9 +123,11 @@ public class RestfulContext extends HttpModule{
                 otherMethod(methodElement.getHttpMethod(), httpRoutePath, new RestfulRouter(httpRoutePath,methodElement));
                 otherMethod(methodElement.getHttpMethod(), getParamPath(httpRoutePath,methodElement), new RestfulRouter(httpRoutePath,methodElement));
                 otherMethod("GET", httpRoutePath+"!", new MethodDescRouter(methodElement));
+                otherMethod("GET", httpRoutePath+"!!", new MethodModelRouter(methodElement));
             }
 
             otherMethod("GET", route+"!", new ClassDescRouter(classElemenet));
+            otherMethod("GET", route+"!!", new ClassModelRouter(classElemenet));
         }
     }
 }
