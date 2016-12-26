@@ -73,31 +73,6 @@ public class RestfulContext extends HttpModule{
     }
 
     /**
-     * 初始化 Restful 的接口到 HttpServer 对象
-     * @param server HttpServer 对象
-     */
-    public static void installRestful(WebServer server) {
-        List<ClassElement> classElemenets = loadConfig();
-        for (ClassElement classElemenet : classElemenets) {
-            String route = classElemenet.getRoute();
-            for(MethodElement methodElement : classElemenet.getMethodElements()) {
-                //增加路由控制
-                String httpRoutePath = route+"/"+methodElement.getName();
-                //注册通过 HTTP 的报文传递参数的路由
-                server.otherMethod(methodElement.getHttpMethod(), httpRoutePath, new RestfulRouter(httpRoutePath,methodElement));
-                //注册通过 url 来传递参数的路由
-                server.otherMethod(methodElement.getHttpMethod(), getParamPath(httpRoutePath,methodElement), new RestfulRouter(httpRoutePath,methodElement));
-                //注册说明页面路由
-                server.otherMethod("GET", httpRoutePath+"!", new MethodDescRouter(methodElement));
-                server.otherMethod("GET", httpRoutePath+"!!", new MethodModelRouter(methodElement));
-            }
-
-            server.otherMethod("GET", route+"!", new ClassDescRouter(classElemenet));
-            server.otherMethod("GET", route+"!!", new ClassModelRouter(classElemenet));
-        }
-    }
-
-    /**
      * 获取参数路径
      * @param routePath 路由路径
      * @return  参数路径
