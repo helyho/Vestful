@@ -31,10 +31,23 @@ public class DirectObject {
 
     private static ObjectPool objectPool = VestfulGlobal.getObjectPool();
     private static String jsTemplate = getJSTemplate();
-    private static List<String> packageControl = new ArrayList<String>();
+    private static List<String> classControls = new ArrayList<String>();
+    private static String route = "DirectObject";
 
-    public static void setPackageControl(List<String> packageControlList){
-        packageControl = packageControlList;
+    /**
+     * 可访问类的控制
+     * @param classControl 匹配类全路径名的正则表达式
+     */
+    public static void setClassControl(List<String> classControl){
+        classControls = classControl;
+    }
+
+    /**
+     * 设置访问路径用户处理脚本
+     * @param routePath 访问路径
+     */
+    public static void setRoute(String routePath){
+        route = routePath;
     }
 
     public static String getJSTemplate(){
@@ -61,8 +74,8 @@ public class DirectObject {
             Object ...params) throws Exception {
 
         boolean createEnable = false;
-        for(String packageRegex : packageControl){
-            if (TString.regexMatch(className, packageRegex) != 0){
+        for(String classControl : classControls){
+            if (TString.regexMatch(className, classControl) != 0){
                 createEnable = true;
             }
         }
@@ -96,7 +109,13 @@ public class DirectObject {
         }
         params = converParam(params);
         Object result = TReflect.invokeMethod(obj,methodName,params);
-        return JSON.toJSON(result);
+
+        //对链式调用的对象进行支持,返回 this
+        if(result.equals(obj)){
+            return "this";
+        }else {
+            return JSON.toJSON(result);
+        }
 
     }
 
@@ -127,6 +146,8 @@ public class DirectObject {
         Method[] methods = TReflect.getMethods(clazz);
         for(Method method : methods){
             String methodName = method.getName();
+
+            if(methodName.equals("main")){}
             String funcParam = "";
             for(int i=0; i<method.getParameters().length; i++){
                 funcParam = funcParam + "arg"+(i+1)+", ";
@@ -146,6 +167,7 @@ public class DirectObject {
         returnTemplate = returnTemplate.replace("T/*CLASS_NAME*/", clazz.getSimpleName());
         returnTemplate = returnTemplate.replace("T/*CLASS_FULL_NAME*/", className);
         returnTemplate = returnTemplate.replace("T/*METHODS*/", funcTemplate.toString().trim());
+        returnTemplate = returnTemplate.replace("T/*ROUTE*/", route);
 
         return returnTemplate;
     }

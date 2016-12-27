@@ -60,7 +60,6 @@ public class RestfulContext extends HttpModule{
                             //根据 Java 命名规范,首字母转换成大写的
                             String methodName = TString.uppercaseFirstChar(entry.getKey().toString());
                             TReflect.invokeMethod(clazz, "set" + methodName, entry.getValue());
-
                         } catch (Exception e) {
                         }
                     }
