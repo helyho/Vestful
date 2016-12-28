@@ -107,22 +107,24 @@ public class RestfulRouter implements HttpRouter {
             httpResponse.protocol().setStatusCode("InvokeError");
 
             //如果是反射的异常类型,取出真实的异常
-            if(e instanceof InvocationTargetException){
-                Throwable throwable = e.getCause();
-                e = (Exception) throwable;
+            while(true) {
+                if (e instanceof InvocationTargetException) {
+                    Throwable throwable = e.getCause();
+                    e = (Exception) throwable;
 
-                //对RestfulException异常的特殊处理
-                if(throwable instanceof RestfulException){
-                    RestfulException restfulException = (RestfulException)throwable;
-                    httpResponse.protocol().setStatus(restfulException.getHttpStatusCode());
-                    httpResponse.protocol().setStatusCode(restfulException.getHttpStatusDesc());
-                }else{
-
-                    throwable.printStackTrace();
+                    //对RestfulException异常的特殊处理
+                    if (throwable instanceof RestfulException) {
+                        RestfulException restfulException = (RestfulException) throwable;
+                        httpResponse.protocol().setStatus(restfulException.getHttpStatusCode());
+                        httpResponse.protocol().setStatusCode(restfulException.getHttpStatusDesc());
+                    }
+                } else {
+                    break;
                 }
-            }else{
-                e.printStackTrace();
             }
+
+            e.printStackTrace();
+
 
             String message = e.getMessage();
             if(message!=null) {

@@ -1,11 +1,11 @@
 //使用案例
-ajax({
-    url: "./DirectObject!!", //请求地址
-    type: "get", //请求方式
-    data: { name: "super", age: 20 }, //请求参数
-    async: false, //是否同步
-    dataType: "json"
-});
+// ajax({
+//     url: "./DirectObject!!", //请求地址
+//     type: "get", //请求方式
+//     data: { name: "super", age: 20 }, //请求参数
+//     async: false, //是否同步
+//     dataType: "json"
+// });
 
 function ajax(options) {
     options = options || {};
@@ -50,6 +50,7 @@ function ajax(options) {
         xhr.send(params);
     }
 
+    //同步调用
     if (!options.async) {
         if (xhr.readyState == 4) {
             var status = xhr.status;
