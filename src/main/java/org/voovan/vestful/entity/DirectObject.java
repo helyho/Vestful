@@ -84,7 +84,7 @@ public class DirectObject {
             Object object = TReflect.newInstance(className, params);
             return objectPool.add(object);
         }else{
-            throw new RestfulException("Class " + className + " not found",521,"ClassNotFound");
+            throw new RestfulException("Class " + className + " not found",521,"CLASS_NOT_FOUND");
         }
     }
 
@@ -105,7 +105,7 @@ public class DirectObject {
             Object ...params) throws Exception {
         Object obj = objectPool.get(pooledObjectId);
         if(obj==null){
-            throw new RestfulException("Object not found, Object id: " + pooledObjectId,522,"ObjectNotFound");
+            throw new RestfulException("Object not found, Object id: " + pooledObjectId,522,"OBJECT_NOT_FOUND");
         }
         params = converParam(params);
         Object result = TReflect.invokeMethod(obj,methodName,params);
@@ -138,7 +138,7 @@ public class DirectObject {
             String className) throws Exception {
 
         if(jsTemplate==null){
-            throw new RestfulException("Load javascript template file error.",523,"ScriptTemplateNotFound");
+            throw new RestfulException("Load javascript template file error.",523,"SCRIPT_TEMPLATE_NOT_FOUND");
         }
 
         StringBuilder funcTemplate = new StringBuilder();

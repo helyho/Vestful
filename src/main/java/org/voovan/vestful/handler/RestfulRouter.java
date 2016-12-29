@@ -104,7 +104,7 @@ public class RestfulRouter implements HttpRouter {
         }catch(Exception e){
 
             httpResponse.protocol().setStatus(500);
-            httpResponse.protocol().setStatusCode("InvokeError");
+            httpResponse.protocol().setStatusCode("INVOKE_ERROR");
 
             //如果是反射的异常类型,取出真实的异常
             while(true) {
