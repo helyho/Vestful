@@ -83,9 +83,6 @@ function ajax(options) {
     options.type = (options.type || "GET").toUpperCase();
     options.dataType = options.dataType || "json";
     var params = formatParams(options.data);
-    responseText = null;
-    responseXML = null;
-    status = null;
 
     //创建Ajax对象,浏览器兼容
     if (window.XMLHttpRequest) {
@@ -123,14 +120,12 @@ function ajax(options) {
 
     if (!options.async) {
         if (xhr.readyState == 4) {
-            var status = xhr.status;
-            if (status >= 200 && status < 300) {
-                responseText = xhr.responseText;
-                responseXML = xhr.responseXML;
+            var respObject = { "statusCode": xhr.status, "statusText": xhr.statusText, "text": xhr.responseText, "xml": xhr.responseXML };
+            if (respObject.statusCode >= 200 && respObject.statusCode < 300) {
+                return respObject
             }else{
-                throw new Error("["+xhr.statusText+"] "+xhr.responseText);
+                throw new Error(respObject.text);
             }
-            return { "statusCode": status, "statusText": xhr.statusText, "text": responseText, "xml": responseXML };
         }
     }
 }
