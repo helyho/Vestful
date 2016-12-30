@@ -67,11 +67,11 @@ public class DirectObject {
      * @throws ReflectiveOperationException
      */
     @Restful( method="GET", desc="Create new object in server side.")
-    public static int createObject(
+    public static String createObject(
             @Param(name="className", desc = "Class full path name.")
-            String className,
+                    String className,
             @Param(name="params", desc = "Constructor method param")
-            Object ...params) throws Exception {
+                    Object ...params) throws Exception {
 
         boolean createEnable = false;
         for(String classControl : classControls){
@@ -98,9 +98,9 @@ public class DirectObject {
     @Restful( method="GET", desc="Invoke Object method.")
     public static String invoke(
             @Param(name="pooledObjectId", desc="Object id in ObjectPool.")
-            int pooledObjectId,
+                    String pooledObjectId,
             @Param(name="methodName", desc="name of which method you want to invoke.")
-            String methodName,
+                    String methodName,
             @Param(name="params", desc="Method invoke params.")
             Object ...params) throws Exception {
         Object obj = objectPool.get(pooledObjectId);
@@ -127,7 +127,7 @@ public class DirectObject {
     @Restful( method="GET", desc="Invoke Object method.")
     public static void release(
             @Param(name="pooledObjectId", desc="Object id in ObjectPool.")
-                    int pooledObjectId
+                    String pooledObjectId
           ) throws Exception {
         objectPool.remove(pooledObjectId);
     }
@@ -158,7 +158,7 @@ public class DirectObject {
             funcTemplate.append("        var argsArray = Array.prototype.slice.call(arguments); \r\n");
             funcTemplate.append("        var currentTime = new Date().getTime(); \n");
             funcTemplate.append("        var resultText = invokeMathod(this.objectId, \""+methodName+"\",argsArray).text;\r\n" );
-            funcTemplate.append("        return eval('t' + currentTime + '=' + resultText)\r\n" );
+            funcTemplate.append("        return eval('DO_t' + currentTime + '=' + resultText)\r\n" );
             funcTemplate.append("    }\r\n\r\n");
         }
 
@@ -188,7 +188,7 @@ public class DirectObject {
                         mapParam.containsKey("type") &&
                         "ServerObject".equals(mapParam.get("type"))
                 ){
-                    Integer objectId = Integer.valueOf(mapParam.get("objectId").toString());
+                    String objectId = mapParam.get("objectId").toString();
                     if(objectPool.contains(objectId)) {
                         params[i] = objectPool.get(objectId);
                     }

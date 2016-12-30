@@ -10,7 +10,7 @@ function T/*CLASS_NAME*/() {
     //构造器
     {
         var constructorArgsArray = Array.prototype.slice.call(arguments);
-        this.objectId = parseInt(createObject(className, constructorArgsArray).text);
+        this.objectId = createObject(className, constructorArgsArray).text;
     }
 
     /**
