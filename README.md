@@ -3,6 +3,7 @@
 #####基于 Voovan 开发的通用 Restful 服务框架。旨在为广大开发者提供一个快速、稳定、功能丰富、自产文档的 Restful 框架。目的是在完成业务实现的同时,说明文档、接口服务等同时完成。
 #####这是一个 Voovan 项目的模块,需要在 Voovan HttpServer项目中添加该模块.
 ```json
+    //配置文件:conf/web.json
     "Modules": [
         {
             "Name": "Vestful 模块",                                      //模块名称
@@ -21,17 +22,16 @@
 
 
 #### 特点:
- - 仅仅通过两个注解就可以自动生成完善的Restful 接口说明文档。
+ - 仅仅通过两个注解就可以自动将方法暴露成 Restful 接口，并生成完善的Restful 接口说明文档。
  - 自动识别路径中的变量、常规请求变量、URLEncode以及MUTILPART提交变量。
        变量来源优先: 路径变量 > URLEncode以及MUTILPART提交变量 > 常规请求变量。
  - 支持 HTTP 协议中的方法以及任意的自定义 HTTP 方法。
- - 对方法的参数个数、返回值类型等没有要求,可以使用任意类型。
- - 如果方法返回的是一个自定义的对象,会自动转换成 JSON 字符串的形式返回。
- - 由于 HTTP 协议发送的请求为字符串,所以方法的参数类型目前仅支持常规的 Java 基础类型。
+ - 由于 HTTP 协议发送的请求为字符串,所以方法的参数类型目前支持常规的 `Java基础类型`、`Collection`、`Map`及`自定义类型`。
+ - 对方法的参数个数、返回值类型等没有要求,可以使用任意类型。如果方法返回的是一个自定义的对象,会自动转换成 JSON 字符串的形式返回。
  - 需要访问说明文档,请在对应的接口URL后增加!, 如接口路径为/test, 访问文档则通过/test!来访问。
  
 ------------------------------------------
-  
+###一、编写业务类  
 ####注解说明:
 - Restful注解
     - 使用方式: 在方法上使用。
@@ -47,6 +47,8 @@
          
 - 注解使用举例:
 ```java
+    //类:org.voovan.test.vestful.TestClass.java
+
     //方法注解
     @Restful(method="LOCK", desc="This is a method description. test float param")
     public static TestResult testWithReturnObject(
@@ -59,9 +61,11 @@
 ```
 
 ------------------------------------------
-
+###二、修改配置文件
+####修改 conf/vestful.json
 ####配置文件说明:
 ```JSON
+//配置文件:conf/web.json
 [
     {
       "name":"test",
@@ -84,7 +88,7 @@
 ----------------------------------------------
 
 ####使用举例:
-测试代码请参照:[package org.voovan.test.vestful.TestClass.java](https://git.oschina.net/helyho/Vestful/blob/master/src/test/java/org/voovan/test/vestful/TestClass.java)
+测试代码请参照:[org.voovan.test.vestful.TestClass.java](https://git.oschina.net/helyho/Vestful/blob/master/src/test/java/org/voovan/test/vestful/TestClass.java)
 
 ----------------------------------------------
     
