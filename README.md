@@ -44,6 +44,19 @@
     - 参数: 
          - name: 参数名称。
          - desc: 关于参数的描述信息。
+         
+- 注解使用举例:
+```java
+    //方法注解
+    @Restful(method="LOCK", desc="This is a method description. test float param")
+    public static TestResult testWithReturnObject(
+                                 @Param(name="test1",desc="Param name is test1, type is String") //参数注解
+                                         String test1,
+                                 @Param(name="test2",desc="Param name is test2. type is int") //参数注解
+                                         int test2){
+        return new TestResult(test1,test2);
+    }
+```
 
 ------------------------------------------
 
@@ -71,7 +84,7 @@
 ----------------------------------------------
 
 ####使用举例:
-测试代码请参照:[TestClass.java](https://git.oschina.net/helyho/Vestful/blob/master/src/test/java/org/voovan/test/restful/TestClass.java)
+测试代码请参照:[package org.voovan.test.vestful.TestClass.java](https://git.oschina.net/helyho/Vestful/blob/master/src/test/java/org/voovan/test/vestful/TestClass.java)
 
 ----------------------------------------------
     
