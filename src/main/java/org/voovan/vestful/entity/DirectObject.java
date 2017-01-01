@@ -158,8 +158,8 @@ public class DirectObject {
             funcTemplate.append("        var argsArray = Array.prototype.slice.call(arguments); \r\n");
             funcTemplate.append("        var currentTime = new Date().getTime(); \n");
             funcTemplate.append("        var resultText = invokeMathod(this.objectId, \""+methodName+"\",argsArray).text;\r\n" );
-            funcTemplate.append("        return eval('DO_t' + currentTime + '=' + resultText)\r\n" );
-            funcTemplate.append("    }\r\n\r\n");
+            funcTemplate.append("        return eval('DO_t' + currentTime + '=' + resultText);\r\n" );
+            funcTemplate.append("    };\r\n\r\n");
         }
 
         String returnTemplate = jsTemplate;

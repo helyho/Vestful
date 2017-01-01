@@ -11,14 +11,14 @@ function T/*CLASS_NAME*/() {
     {
         var constructorArgsArray = Array.prototype.slice.call(arguments);
         this.objectId = createObject(className, constructorArgsArray).text;
-    }
+    };
 
     /**
      * 释放对象
      */
     this.release = function() {
-        release(this.objectId)
-    }
+        release(this.objectId);
+    };
 
     T/*METHODS*/
 }
@@ -139,7 +139,7 @@ function formatParams(data) {
         if (data[name] instanceof Array || data[name] instanceof Object) {
             value = encodeURIComponent(JSON.stringify(data[name]));
         } else {
-            value = encodeURIComponent(data[name])
+            value = encodeURIComponent(data[name]);
         }
 
         arr.push(key + "=" + value);
