@@ -10,7 +10,7 @@ function T/*CLASS_NAME*/() {
     //构造器
     {
         var constructorArgsArray = Array.prototype.slice.call(arguments);
-        this.objectId = createObject(className, constructorArgsArray).text;
+        this.objectId = createObject(className, constructorArgsArray);
     };
 
     /**
@@ -64,7 +64,7 @@ function invokeMathod(v_objectId, v_methodName, v_params) {
  * 在服务端构造对象
  */
 function release(v_objectId) {
-     var response =  ajax({
+    ajax({
         url: "/T/*ROUTE*//release", //请求地址
         type: "get", //请求方式
         data: { pooledObjectId: v_objectId }, //请求参数
@@ -76,7 +76,6 @@ function release(v_objectId) {
 /**
  * ajax调用类的封装
  * @param options 参数
- * @returns 返回的数据模型 {code: number, statusText: string, text: null, xml: null}
  */
 function ajax(options) {
     options = options || {};
@@ -120,11 +119,10 @@ function ajax(options) {
 
     if (!options.async) {
         if (xhr.readyState == 4) {
-            var respObject = { "statusCode": xhr.status, "statusText": xhr.statusText, "text": xhr.responseText, "xml": xhr.responseXML };
-            if (respObject.statusCode >= 200 && respObject.statusCode < 300) {
-                return respObject
+            if (xhr.status >= 200 && xhr.status < 300) {
+                return xhr.responseText
             }else{
-                throw new Error(respObject.text);
+                throw new Error(xhr.responseText);
             }
         }
     }

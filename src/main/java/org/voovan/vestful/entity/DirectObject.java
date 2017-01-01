@@ -111,7 +111,7 @@ public class DirectObject {
         Object result = TReflect.invokeMethod(obj,methodName,params);
 
         //对链式调用的对象进行支持,返回 this
-        if(result.equals(obj)){
+        if(result!=null && result.equals(obj)){
             return "this";
         }else {
             return JSON.toJSON(result);
@@ -157,7 +157,7 @@ public class DirectObject {
             funcTemplate.append("    this."+methodName+" = function("+funcParam+") {\r\n" );
             funcTemplate.append("        var argsArray = Array.prototype.slice.call(arguments); \r\n");
             funcTemplate.append("        var currentTime = new Date().getTime(); \n");
-            funcTemplate.append("        var resultText = invokeMathod(this.objectId, \""+methodName+"\",argsArray).text;\r\n" );
+            funcTemplate.append("        var resultText = invokeMathod(this.objectId, \""+methodName+"\",argsArray);\r\n" );
             funcTemplate.append("        try{ \r\n");
             funcTemplate.append("           return eval('DO_t' + currentTime + '=' + resultText);\r\n" );
             funcTemplate.append("        }catch(e){ \r\n");
