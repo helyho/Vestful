@@ -70,7 +70,7 @@ public class RestfulRouter implements HttpRouter {
                     try {
                         //传入的"null"字符串转换成 null 对象
                         Object paramValue = null;
-                        if(!value.equals("null")) {
+                        if(!"null".equals(value)) {
 
                             //如果是数组,则将参数转换成数组形式
                             if( (paramElement.getClazz().isArray() || paramElement.getClazz() == Collections.class) &&
