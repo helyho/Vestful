@@ -26,7 +26,7 @@ import java.util.Map;
  * WebSite: https://github.com/helyho/Vestful
  * Licence: Apache v2 License
  */
-public class RestfulContext extends HttpModule{
+public class RestfulModule extends HttpModule{
 
     public static void addClassConfig(List<Map<String, Object>> classConfigs, String name, String route, String classPath, String desc){
         classConfigs.add(TObject.newMap("name",name,"route",route,"classPath",classPath,"desc",desc));

@@ -7,7 +7,7 @@ import org.voovan.http.server.HttpRouter;
 import org.voovan.http.server.context.WebContext;
 import org.voovan.tools.TString;
 import org.voovan.tools.json.JSON;
-import org.voovan.vestful.RestfulContext;
+import org.voovan.vestful.RestfulModule;
 import org.voovan.vestful.dto.Error;
 import org.voovan.vestful.dto.MethodElement;
 import org.voovan.vestful.dto.ParamElement;
@@ -146,7 +146,7 @@ public class RestfulRouter implements HttpRouter {
      */
     public String canFetctPathVariables(String requestPath,String routePath){
         boolean matchRouteIgnoreCase = WebContext.getWebServerConfig().isMatchRouteIgnoreCase();
-        String paramPath = RestfulContext.getParamPath(routePath,methodElement);
+        String paramPath = RestfulModule.getParamPath(routePath,methodElement);
         if(HttpDispatcher.matchPath(requestPath, paramPath,matchRouteIgnoreCase)){
             return paramPath;
         }else{

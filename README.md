@@ -8,7 +8,7 @@
         {
             "Name": "Vestful 模块",                                      //模块名称
             "Path": "/Vestful",                                          //模块路径
-            "ClassName": "org.voovan.vestful.RestfulContext"             //模块处理器
+            "ClassName": "org.voovan.vestful.RestfulModule"             //模块处理器
         }
     ]
 ```
