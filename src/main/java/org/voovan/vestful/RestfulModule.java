@@ -61,10 +61,10 @@ public class RestfulModule extends HttpModule{
                             String paramValue = entry.getValue().toString();
                             Class clazz = Class.forName(clazzName);
                             //根据 Java 命名规范,首字母转换成大写的
-                            String methodName = "set" + TString.uppercaseFirstChar(paramName);
+                            String methodName = "set" + TString.uppercaseHead(paramName);
                             TReflect.invokeMethod(clazz, methodName, paramValue);
                         } catch (Exception e) {
-                            String methodName = "set" + TString.uppercaseFirstChar(entry.getKey());
+                            String methodName = "set" + TString.uppercaseHead(entry.getKey());
                             Logger.warn("Fill ["+entry.getKey()+"] into "+clazzName+"#"+methodName+" error with "+e.getClass().getSimpleName());
                         }
                     }
