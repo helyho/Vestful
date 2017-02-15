@@ -108,13 +108,21 @@ public class DirectObject {
             throw new RestfulException("Object not found, Object id: " + pooledObjectId,522,"OBJECT_NOT_FOUND");
         }
         params = converParam(params);
-        Object result = TReflect.invokeMethod(obj,methodName,params);
+        try{
+            Object result = TReflect.invokeMethod(obj,methodName,params);
 
-        //对链式调用的对象进行支持,返回 this
-        if(result!=null && result.equals(obj)){
-            return "this";
-        }else {
-            return JSON.toJSON(result);
+            //对链式调用的对象进行支持,返回 this
+            if(result!=null && result.equals(obj)){
+                return "this";
+            }else {
+                return JSON.toJSON(result);
+            }
+        }catch(Exception e){
+            if(e instanceof ReflectiveOperationException){
+                throw (Exception)e.getCause();
+            }else{
+                throw e;
+            }
         }
 
     }

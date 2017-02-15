@@ -68,7 +68,10 @@ public class RestfulRouter implements HttpRouter {
                         //未找到命名参数异常
                         throw new RestfulException("not found param named by "+paramElement.getName()+". ");
                     }
+
                     try {
+                        value = TString.fromUnicode(value);
+
                         //传入的"null"字符串转换成 null 对象
                         Object paramValue = null;
                         if(!"null".equals(value)) {
