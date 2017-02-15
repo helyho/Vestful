@@ -63,6 +63,7 @@ public class RestfulRouter implements HttpRouter {
                 for(int i=0;i<paramElements.size();i++){
                     ParamElement paramElement = paramElements.get(i);
                     String value = httpRequest.getParameter(paramElement.getName());
+                    value = TString.unConvertEscapeChar(value);
                     if(value==null){
                         //未找到命名参数异常
                         throw new RestfulException("not found param named by "+paramElement.getName()+". ");
