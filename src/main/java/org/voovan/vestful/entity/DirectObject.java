@@ -32,9 +32,9 @@ public class DirectObject {
 
     private static ObjectPool objectPool = VestfulGlobal.getObjectPool();
     private static String jsTemplate = getJSTemplate();
-    private static List<String> classControls = new ArrayList<String>();
+    private static List<String> classControls;
     private static String route = "DirectObject";
-    private static Map<String,String> aliases = new HashMap<String,String>();
+    private static Map<String,String> aliases;
 
 
     /**
@@ -88,10 +88,14 @@ public class DirectObject {
 
         boolean createEnable = false;
 
-        for(String classControl : classControls){
-            if (TString.regexMatch(className, classControl) != 0){
-                createEnable = true;
+        if(classControls!=null) {
+            for (String classControl : classControls) {
+                if (TString.regexMatch(className, classControl) != 0) {
+                    createEnable = true;
+                }
             }
+        }else{
+            createEnable = true;
         }
 
         if(createEnable) {
@@ -164,9 +168,11 @@ public class DirectObject {
         }
 
         //别名处理
-        for(Map.Entry<String,String> aliasDefine : aliases.entrySet()){
-            if(className.startsWith(aliasDefine.getKey())){
-                className = className.replace(aliasDefine.getKey(), aliasDefine.getValue());
+        if(aliases!=null) {
+            for (Map.Entry<String, String> aliasDefine : aliases.entrySet()) {
+                if (className.startsWith(aliasDefine.getKey())) {
+                    className = className.replace(aliasDefine.getKey(), aliasDefine.getValue());
+                }
             }
         }
 
