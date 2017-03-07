@@ -157,6 +157,4 @@ public class RestfulRouter implements HttpRouter {
             return null;
         }
     }
-
-
 }

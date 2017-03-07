@@ -57,7 +57,14 @@ public class RestfulModule extends HttpModule{
                     for (Map.Entry<String, Object> entry : paramsMap.entrySet()) {
                         try {
                             String paramName = entry.getKey().toString();
-                            String paramValue = entry.getValue().toString();
+                            Object value = entry.getValue();
+                            String paramValue = null;
+                            if(value instanceof String || value.getClass().isPrimitive()){
+                                paramValue = value.toString();
+                            }else{
+                                paramValue = JSON.toJSON(value);
+                            }
+
                             Class clazz = Class.forName(clazzName);
                             //根据 Java 命名规范,首字母转换成大写的
                             String methodName = "set" + TString.uppercaseHead(paramName);

@@ -15,6 +15,7 @@ import org.voovan.vestful.exception.RestfulException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,22 +34,34 @@ public class DirectObject {
     private static String jsTemplate = getJSTemplate();
     private static List<String> classControls = new ArrayList<String>();
     private static String route = "DirectObject";
+    private static Map<String,String> aliases = new HashMap<String,String>();
 
-    /**
-     * 可访问类的控制
-     * @param classControl 匹配类全路径名的正则表达式
-     */
-    public static void setClassControl(List<String> classControl){
-        classControls = classControl;
-    }
 
     /**
      * 设置访问路径用户处理脚本
-     * @param routePath 访问路径
+     * @param routeParam 访问路径
      */
-    public static void setRoute(String routePath){
-        route = routePath;
+    public static void setRoute(String routeParam){
+        route = routeParam;
     }
+
+
+    /**
+     * 可访问类的控制
+     * @param classControlParam 匹配类全路径名的正则表达式
+     */
+    public static void setClassControl(List<String> classControlParam){
+        classControls = classControlParam;
+    }
+
+    /**
+     * 可访问类的控制
+     * @param aliasParam 匹配类全路径名的正则表达式
+     */
+    public static void setAlias(Map<String,String> aliasParam){
+        aliases = aliasParam;
+    }
+
 
     public static String getJSTemplate(){
         try {
@@ -74,6 +87,7 @@ public class DirectObject {
                     Object ...params) throws Exception {
 
         boolean createEnable = false;
+
         for(String classControl : classControls){
             if (TString.regexMatch(className, classControl) != 0){
                 createEnable = true;
@@ -149,6 +163,13 @@ public class DirectObject {
             throw new RestfulException("Load javascript template file error.",523,"SCRIPT_TEMPLATE_NOT_FOUND");
         }
 
+        //别名处理
+        for(Map.Entry<String,String> aliasDefine : aliases.entrySet()){
+            if(className.startsWith(aliasDefine.getKey())){
+                className = className.replace(aliasDefine.getKey(), aliasDefine.getValue());
+            }
+        }
+
         StringBuilder funcTemplate = new StringBuilder();
         Class clazz = Class.forName(className);
         Method[] methods = TReflect.getMethods(clazz);
@@ -196,7 +217,7 @@ public class DirectObject {
                 Map mapParam = TObject.cast(param,Map.class);
                 if(mapParam.size() == 2 &&
                         mapParam.containsKey("objectId") &&
-                        TString.isInteger(mapParam.get("objectId").toString()) &&
+                        mapParam.get("objectId").toString().length() == 32 &&
                         mapParam.containsKey("type") &&
                         "ServerObject".equals(mapParam.get("type"))
                 ){
