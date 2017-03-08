@@ -11,7 +11,7 @@ import org.voovan.vestful.dto.ClassElement;
 import java.io.UnsupportedEncodingException;
 
 /**
- * Restful 类文档处理类
+ * Restful 类模型生成
  *
  * @author helyho
  * <p>

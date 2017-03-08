@@ -7,7 +7,7 @@ import org.voovan.tools.json.JSON;
 import org.voovan.vestful.dto.MethodElement;
 
 /**
- * Restful 方法文档处理类
+ * Restful 方法文理类
  *
  * @author helyho
  * <p>

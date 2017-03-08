@@ -6,7 +6,7 @@ import org.voovan.http.server.WebServer;
 import java.io.UnsupportedEncodingException;
 
 /**
- * Restful 接口服务类
+ * Restful 接口服务类,可独立运行
  *
  * @author helyho
  * <p>
@@ -21,7 +21,7 @@ public class RestfulService {
      * 构造函数
      */
     public RestfulService(){
-        webServer = webServer.newInstance();
+        webServer = WebServer.newInstance();
     }
 
     /**

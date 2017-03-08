@@ -11,7 +11,7 @@ import org.voovan.vestful.dto.MethodElement;
 import java.io.UnsupportedEncodingException;
 
 /**
- * Restful 方法文档处理类
+ * Restful 方法文档页面处理类
  *
  * @author helyho
  * <p>

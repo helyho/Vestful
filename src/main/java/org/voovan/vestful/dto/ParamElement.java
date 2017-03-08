@@ -1,7 +1,7 @@
 package org.voovan.vestful.dto;
 
 /**
- * 类文字命名
+ * 参数描述对象
  *
  * @author helyho
  *         <p>

@@ -88,6 +88,7 @@ public class DirectObject {
 
         boolean createEnable = false;
 
+        //类访问控制
         if(classControls!=null) {
             for (String classControl : classControls) {
                 if (TString.regexMatch(className, classControl) != 0) {
@@ -135,6 +136,7 @@ public class DirectObject {
             }else {
                 return JSON.toJSON(result);
             }
+
         }catch(Exception e){
             if(e instanceof ReflectiveOperationException){
                 throw (Exception)e.getCause();
@@ -158,6 +160,12 @@ public class DirectObject {
         objectPool.remove(pooledObjectId);
     }
 
+    /**
+     * 生成类对应的 js 脚本
+     * @param className
+     * @return
+     * @throws Exception
+     */
     @Restful( method="GET", desc="Get script of browser invoke server side object .")
     public static String genScript(
             @Param(name="className", desc="Which class want to generate javascript code.")
@@ -179,6 +187,8 @@ public class DirectObject {
         StringBuilder funcTemplate = new StringBuilder();
         Class clazz = Class.forName(className);
         Method[] methods = TReflect.getMethods(clazz);
+
+        //逐个生成类的所有方法
         for(Method method : methods){
             String methodName = method.getName();
 

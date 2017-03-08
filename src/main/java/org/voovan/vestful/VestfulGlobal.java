@@ -3,7 +3,7 @@ package org.voovan.vestful;
 import org.voovan.tools.ObjectPool;
 
 /**
- * 类文字命名
+ * Vestful的全局配置
  *
  * @author helyho
  * <p>

@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Vector;
 
 /**
- * 类元素模型
+ * 类描述对象
  *
  * @author helyho
  * <p>

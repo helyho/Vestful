@@ -1,7 +1,8 @@
 package org.voovan.vestful.exception;
 
 /**
- * 类文字命名
+ * 异常信息描述
+ *     通过抛出该类的异常可以控制 http 响应的状态码和状态描述
  *
  * @author helyho
  *         <p>

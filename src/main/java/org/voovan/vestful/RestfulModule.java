@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Restful 上下文类
+ * Restful 模块类用于注册至 Voovan 的 web 服务
  *
  * @author helyho
  * <p>
