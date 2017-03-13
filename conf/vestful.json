@@ -16,8 +16,8 @@
       "route":"DirectObject",
       //自动寻找参数名对应的方法,本例中程序寻找 setClassControl 方法
       "classControl": [
-        "java.*",
-        "org.*"
+        "java.util.ArrayList",
+        "org.voovan.test.vestful.*"
       ],
       //定义类的别名
       "alias":{

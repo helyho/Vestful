@@ -7,8 +7,14 @@
 <script lang="javascript" src="/DirectObject/genScript/java.util.ArrayList"></script>
 <script lang="javascript" src="/DirectObject/genScript/OVTV"></script>
 <script lang="javascript" >
+
+    function doOutput(msg){
+        document.getElementById("output").innerHTML = document.getElementById("output").innerHTML+"<br/>"+msg;
+    }
+
     arraylist1 = null;
     arraylist2 = null;
+
     function test(){
         if(arraylist1 == null){
            arraylist1 = new ArrayList();
@@ -17,21 +23,24 @@
         if(arraylist2 == null){
             arraylist2 = new ArrayList();
         }
-        console.log("add item into arraylist1");
+
+        doOutput("add item into arraylist1");
         arraylist1.add("aaaa");
-        console.log("add item into arraylist2");
+
+        doOutput("add item into arraylist2");
         arraylist2.add("bbbb");
 
-        console.log("arraylist1 current size: " + arraylist1.size());
-        console.log("arraylist2 current size: " + arraylist2.size());
+        doOutput("arraylist1 current size: " + arraylist1.size());
+        doOutput("arraylist2 current size: " + arraylist2.size());
 
-        console.log("add arraylist2 all item into arraylist1");
+        doOutput("add arraylist2 all item into arraylist1");
         arraylist1.addAll(arraylist2)
-        console.log("arraylist1 current size: " + arraylist1.size());
+        doOutput("arraylist1 current size: " + arraylist1.size());
     }
 
 </script>
 <body>
 <input type="button" onclick="test()" value="Test"/>
+    <div id="output" style="height: 100%;width: 100%"></div>
 </body>
 </html>
