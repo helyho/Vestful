@@ -113,9 +113,11 @@
     "classPath": "org.voovan.vestful.entity.DirectObject",
     "desc": "Restful API for DirectObject",
     "params": {
-      //这里是访问这个服务的完整路径(web.json中配置的Vestful 模块路径+ 当前服务的类路径)
+      //这里是访问这个服务的完整路径(web.json中配置的Vestful模块路径+ 当前服务的类路径)
+      //这里 web.json 中配置的是"/",当前类访问路径配置的是"DirectObject",所以通过/DirectObject来访问
       "route":"DirectObject",
-      //自动寻找参数名对应的方法,本例中程序寻找 setClassControl 方法
+      //这里控制 class 是否能够被前端的 js 调用
+      //只有这classControl这个节点里的 class 才可以被前端 js 调用
       "classControl": [
         "java.util.ArrayList",
         "org.voovan.test.vestful.*"
