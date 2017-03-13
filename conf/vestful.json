@@ -22,7 +22,8 @@
       //定义类的别名
       "alias":{
         "OVTV": "org.voovan.test.vestful.TestClass"
-      }
+      },
+      "objectAliveTime":60
     }
   }
 ]

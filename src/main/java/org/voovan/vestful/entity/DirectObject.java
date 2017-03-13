@@ -62,6 +62,13 @@ public class DirectObject {
         aliases = aliasParam;
     }
 
+    /**
+     * 设置对象池的对象存活时间
+     * @param aliveTime 对象存活时间,单位:秒
+     */
+    public static void setObjectAliveTime(int aliveTime){
+        VestfulGlobal.getObjectPool().setAliveTime(aliveTime);
+    }
 
     public static String getJSTemplate(){
         try {
