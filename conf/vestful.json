@@ -23,6 +23,7 @@
       "alias":{
         "OVTV": "org.voovan.test.vestful.TestClass"
       },
+      //对象存活时间控制,单位:秒
       "objectAliveTime":60
     }
   }
