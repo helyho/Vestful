@@ -63,9 +63,9 @@
 ------------------------------------------
 ###二、修改配置文件
 ####修改 conf/vestful.json
-####配置文件说明:
+####增加一下内容到配置文件中:
 ```JSON
-//配置文件:conf/web.json
+//配置文件:conf/vestful.json
 [
     {
       "name":"test",
@@ -95,3 +95,52 @@
 ####说明文档解释:
 
 ![](http://git.oschina.net/uploads/images/2016/0711/172233_336dbdd7_116083.png)
+
+----------------------------------------------
+
+###三、实现在页面的 JS 中操作后台 java 对象
+####修改 conf/vestful.json
+####增加一下内容到配置文件中::
+```JSON
+//配置文件:conf/vestful.json
+[
+    "name": "DirectObject",
+    "route": "DirectObject",
+    "classPath": "org.voovan.vestful.entity.DirectObject",
+    "desc": "Restful API for DirectObject",
+    "params": {
+      //这里是访问这个服务的完整路径(web.json中配置的Vestful 模块路径+ 当前服务的类路径)
+      "route":"DirectObject",
+      //自动寻找参数名对应的方法,本例中程序寻找 setClassControl 方法
+      "classControl": [
+        "java.util.ArrayList",
+        "org.voovan.test.vestful.*"
+      ],
+      //定义类的别名
+      "alias":{
+        "OVTV": "org.voovan.test.vestful.TestClass"
+      }
+    }
+]
+```
+
+在页面中引用 java 类到页面的 js 上下问中:
+```html
+<script lang="javascript" src="/DirectObject/genScript/java.util.ArrayList"></script>
+```
+
+在页面中使用 Java 类:
+```javascript
+//具体内容请参照 WEBAPP/test.html
+<script lang="javascript" >
+   arraylist1 = new ArrayList();
+   arraylist1.add("aaaa");
+
+   arraylist2 = new ArrayList();
+   arraylist2.add("bbbb");
+
+   //支持在前台构造的 java 对象的相互引用
+   arraylist1.addAll(arraylist2)
+<script/>
+
+```
