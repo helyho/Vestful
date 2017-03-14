@@ -168,7 +168,12 @@
    arraylist2.add("bbbb");
 
    //支持在前台构造的 java 对象的相互引用
-   arraylist1.addAll(arraylist2)
+   arraylist1.addAll(arraylist2);
+
+   //手工释放对象,如果不手工释放则根据配置文件里的存活时常进行释放
+   arraylist1.release();
+   arraylist2.release();
 <script/>
+
 
 ```

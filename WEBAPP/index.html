@@ -37,6 +37,7 @@
         arraylist1.addAll(arraylist2)
         doOutput("arraylist1 current size: " + arraylist1.size());
 
+        //手工释放对象,如果不手工释放则根据配置文件里的存活时常进行释放
         arraylist1.release();
         arraylist2.release();
     }
