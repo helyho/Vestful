@@ -14,7 +14,7 @@
 ```
 #####接口服务演示:[http://vestful.voovan.org/vestful/test!](http://vestful.voovan.org/vestful/test!)
 #####接口方法演示:[http://vestful.voovan.org/vestful/test/testWithReturnObject!](http://vestful.voovan.org/vestful/test/testWithReturnObject!)
-#####Call java 类演示:[http://vestful.voovan.org](http://vestful.voovan.org/vestful/test!)
+#####Call java 类演示:[http://vestful.voovan.org](http://vestful.voovan.org/)
 
 #####关于部署##### 
    - 将Vestful.jar复制到到目标 VoovanHttpServer 的 lib 目录
