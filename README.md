@@ -1,25 +1,6 @@
 ![](http://git.oschina.net/uploads/images/2016/0510/122514_7d971a34_116083.jpeg)
 =======================================================================================
-#####基于 Voovan 开发的通用 Restful 服务框架。旨在为广大开发者提供一个快速、稳定、功能丰富、自产文档的 Restful 框架。目的是在完成业务实现的同时,说明文档、接口服务等同时完成。
-#####这是一个 Voovan 项目的模块,需要在 Voovan HttpServer项目中添加该模块.
-```json
-    //配置文件:conf/web.json
-    "Modules": [
-        {
-            "Name": "Vestful 模块",                                      //模块名称
-            "Path": "/vestful",                                          //模块路径
-            "ClassName": "org.voovan.vestful.RestfulModule"             //模块处理器
-        }
-    ]
-```
-#####接口服务演示:[http://vestful.voovan.org/vestful/test!](http://vestful.voovan.org/vestful/test!)
-#####接口方法演示:[http://vestful.voovan.org/vestful/test/testWithReturnObject!](http://vestful.voovan.org/vestful/test/testWithReturnObject!)
-#####Call java 类演示:[http://vestful.voovan.org](http://vestful.voovan.org/)
-
-#####关于部署##### 
-   - 将Vestful.jar复制到到目标 VoovanHttpServer 的 lib 目录
-   - 并按照上面的模块配置在 web.json 中进行配置
-   - 访问: http://x.x.x.x/vestful/className!
+#####基于 Voovan 开发的通用 Restful 服务框架。旨在为广大开发者提供一个快速、稳定、功能丰富、自产文档的 Restful 框架。目的是在完成业务实现的同时,说明文档、接口服务等同时完成。这是一个 Voovan 项目的模块,需要在 Voovan WebServer 项目中添加该模块.
 
 #### 特点:
  - 仅仅通过两个注解就可以自动将方法暴露成 Restful 接口，并生成完善的Restful 接口说明文档。
@@ -35,22 +16,47 @@
     * 1.支持类可访问控制,控制那些类可以被前台操作。
     * 2.支持类或者包的别名控制，对某些不想暴露类路径或者类的完全现定名的可以通过别名的方式隐藏类。
     * 3.前端实例化的对象的存活时间控制,防止 OOM。使用对象的方法等操作会默认自动刷新存活时间。
- 
+
+#####接口服务演示:[http://vestful.voovan.org/vestful/test!](http://vestful.voovan.org/vestful/test!)
+#####接口方法演示:[http://vestful.voovan.org/vestful/test/testWithReturnObject!](http://vestful.voovan.org/vestful/test/testWithReturnObject!)
+#####Call java 类演示:[http://vestful.voovan.org](http://vestful.voovan.org/)
+
+###一、准备Vestful运行环境
+
+
+- ####部署 VoovanServer:
+
+[下载](https://git.oschina.net/helyho/Voovan/attach_files) 最新版本的VoovanServer, 并修改配置文件`web.json`。
+
+```json
+    //配置文件:conf/web.json
+    "Modules": [
+        {
+            "Name": "Vestful 模块",                                      //模块名称
+            "Path": "/vestful",                                          //模块路径
+            "ClassName": "org.voovan.vestful.RestfulModule"             //模块处理器
+        }
+    ]
+```
+- ####服务配置:
+   服务配置请参照 Voovan 的说明文档,主要配置/conf/web.json 文件即可。
+
+
 ------------------------------------------
-###一、编写业务类  
+###二、编写业务类
 ####注解说明:
 - Restful注解
     - 使用方式: 在方法上使用。
-    - 参数: 
+    - 参数:
          - method / HTTP 请求的方法类型。例如: GET、POST、PUT 等等。
          - desc   / 关于方法的描述信息。
-     
+
 - Param注解
     - 使用方式: 在方法的参数上使用。
-    - 参数: 
+    - 参数:
          - name: 参数名称。
          - desc: 关于参数的描述信息。
-         
+
 - 注解使用举例:
 ```java
     //类:org.voovan.test.vestful.TestClass.java
@@ -67,7 +73,7 @@
 ```
 
 ------------------------------------------
-###二、修改配置文件
+###三、修改配置文件
 ####修改 conf/vestful.json
 ####增加一下内容到配置文件中:
 ```JSON
@@ -76,22 +82,17 @@
     {
       "name":"test",
       "route":"/test",
-      "classPath":"org.voovan.test.restful.TestClass",
+      "classPath":"org.voovan.test.restful.TestClass", //上一步中变写的业务类
       "desc":"this is a test interface."
     }
 ]
 ```
  - name: 接口名称
- - route: 服务搜寻的路由,如果没有这个节点,则默认值为 classPath 的类名,例如:org.voovan.restful.TestClass则默认 route 为/TestClass
+ - route: 服务搜寻的路由,如果没有这个节点,则默认值为 classPath 的类名,例如:org.voovan.restful.TestClass, 则默认 route 为/TestClass
  - classPath: 提供接口的类说明
  - desc: 接口描述信息
- 
+
 --------------------------------------------
-
-####服务部署说明:
-   服务配置请参照 Voovan 的说明文档,主要配置/conf/web.json 文件即可。
-
-----------------------------------------------
 
 ####使用举例:
 测试代码请参照:[org.voovan.test.vestful.TestClass.java](https://git.oschina.net/helyho/Vestful/blob/master/src/test/java/org/voovan/test/vestful/TestClass.java)
@@ -112,9 +113,12 @@
 
 ![](http://git.oschina.net/uploads/images/2017/0314/125853_9e52bc93_116083.png "")
 
+
+**以上是基本的 Restful 服务的提供方式,下面将会介绍如何在页面的 JS 中操作后台的 java 对象.**
+
 ----------------------------------------------
 
-###三、在页面的 JS 中操作后台的 java 对象
+###四、在页面的 JS 中操作后台的 java 对象
 ####修改 conf/vestful.json
 ####增加一下内容到配置文件中::
 ```JSON
