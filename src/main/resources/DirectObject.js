@@ -28,7 +28,7 @@ function T/*CLASS_NAME*/() {
  */
 function createObject(v_className, v_params) {
     return ajax({
-        url: "/T/*ROUTE*//createObject", //请求地址
+        url: "T/*ROUTE*//createObject", //请求地址
         type: "get", //请求方式
         data: { className: v_className, params: v_params }, //请求参数
         async: false, //是否同步
@@ -52,7 +52,7 @@ function invokeMathod(v_objectId, v_methodName, v_params) {
         v_params = [];
     }
     return ajax({
-        url: "/T/*ROUTE*//invoke", //请求地址
+        url: "T/*ROUTE*//invoke", //请求地址
         type: "get", //请求方式
         data: { pooledObjectId: v_objectId, methodName: v_methodName, params: v_params }, //请求参数
         async: false, //是否同步
@@ -65,7 +65,7 @@ function invokeMathod(v_objectId, v_methodName, v_params) {
  */
 function release(v_objectId) {
     ajax({
-        url: "/T/*ROUTE*//release", //请求地址
+        url: "T/*ROUTE*//release", //请求地址
         type: "get", //请求方式
         data: { pooledObjectId: v_objectId }, //请求参数
         async: false, //是否同步

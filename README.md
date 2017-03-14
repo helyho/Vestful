@@ -75,7 +75,7 @@
 [
     {
       "name":"test",
-      "route":"/test/", 
+      "route":"/test",
       "classPath":"org.voovan.test.restful.TestClass",
       "desc":"this is a test interface."
     }
