@@ -7,7 +7,7 @@
 
     <groupId>org.voovan</groupId>
     <artifactId>Vestful</artifactId>
-    <version>1.0-beta-3</version>
+    <version>1.0.rc.1</version>
     <packaging>jar</packaging>
     <name>Voovan</name>
     <url>https://git.oschina.net/helyho/Vestful</url>
@@ -24,7 +24,7 @@
         <dependency>
             <groupId>org.voovan</groupId>
             <artifactId>voovan-framework</artifactId>
-            <version>1.0-beta-2</version>
+            <version>1.0</version>
         </dependency>
     </dependencies>
 
