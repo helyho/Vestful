@@ -36,6 +36,9 @@
         doOutput("add arraylist2 all item into arraylist1");
         arraylist1.addAll(arraylist2)
         doOutput("arraylist1 current size: " + arraylist1.size());
+
+        arraylist1.release();
+        arraylist2.release();
     }
 
 </script>
