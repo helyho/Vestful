@@ -8,7 +8,7 @@
   },
   {
     "name": "DirectObject",
-    "route": "DirectObject",
+    "route": "/DirectObject",
     "classPath": "org.voovan.vestful.entity.DirectObject",
     "desc": "Restful API for DirectObject",
     "params": {
