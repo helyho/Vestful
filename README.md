@@ -7,18 +7,19 @@
     "Modules": [
         {
             "Name": "Vestful 模块",                                      //模块名称
-            "Path": "/Vestful",                                          //模块路径
+            "Path": "/vestful",                                          //模块路径
             "ClassName": "org.voovan.vestful.RestfulModule"             //模块处理器
         }
     ]
 ```
-#####接口服务演示地址:[http://vestful.voovan.org/test!](http://vestful.voovan.org/test!)
-#####接口方法演示地址:[http://vestful.voovan.org/test/testWithReturnObject!](http://vestful.voovan.org/test/testWithReturnObject!)
+#####接口服务演示:[http://vestful.voovan.org/vestful/test!](http://vestful.voovan.org/vestful/test!)
+#####接口方法演示:[http://vestful.voovan.org/vestful/test/testWithReturnObject!](http://vestful.voovan.org/vestful/test/testWithReturnObject!)
+#####Call java 类演示:[http://vestful.voovan.org](http://vestful.voovan.org/vestful/test!)
 
 #####关于部署##### 
    - 将Vestful.jar复制到到目标 VoovanHttpServer 的 lib 目录
    - 并按照上面的模块配置在 web.json 中进行配置
-   - 访问: http://x.x.x.x/Vestful/className!
+   - 访问: http://x.x.x.x/vestful/className!
 
 #### 特点:
  - 仅仅通过两个注解就可以自动将方法暴露成 Restful 接口，并生成完善的Restful 接口说明文档。
@@ -95,11 +96,21 @@
 ####使用举例:
 测试代码请参照:[org.voovan.test.vestful.TestClass.java](https://git.oschina.net/helyho/Vestful/blob/master/src/test/java/org/voovan/test/vestful/TestClass.java)
 
-----------------------------------------------
-    
-####说明文档解释:
 
-![](http://git.oschina.net/uploads/images/2016/0711/172233_336dbdd7_116083.png)
+----------------------------------------------
+
+####说明文档解释:
+类说明及测试页面: http://x.x.x.x/vestful/test!
+   - `Vestful` 是在 web.json 中配置的模块访问路径.
+   - `test` 是在 vestful.json 中配置的当前类的route参数.
+
+类中某个方法的说明及测试页面: http://x.x.x.x/vestful/test/testWithObject!
+   - `Vestful` 是在 web.json 中配置的模块访问路径.
+   - `test` 是在 vestful.json 中配置的当前类的route参数
+   - `testWithObject` 类中的方法名
+
+
+![](http://git.oschina.net/uploads/images/2017/0314/125853_9e52bc93_116083.png "")
 
 ----------------------------------------------
 
@@ -132,11 +143,19 @@
     }
 ]
 ```
-
+----------------------------------------------
 在页面中引用 java 类到页面的 js 上下问中:
 ```html
 <script lang="javascript" src="/DirectObject/genScript/java.util.ArrayList"></script>
 ```
+页面引入 js 的路径为conf/vestful.json配置文件中"org.voovan.vestful.entity.DirectObject"类的 params 参数列表中route属性中的路径。
+路径后增加genScript来代表后台动态生成脚本。
+
+例如：
+    例子中的配置为："route":"DirectObject"
+    那么页面引入的 js 路径为：/DirectObject/genScript/类完全限定名或者别名即可将对象引入到页面中。
+
+----------------------------------------------
 
 在页面中使用 Java 类:
 ```javascript
