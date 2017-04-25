@@ -6,6 +6,7 @@
 </head>
 <script lang="javascript" src="/vestful/DirectObject/genScript/java.util.ArrayList"></script>
 <script lang="javascript" src="/vestful/DirectObject/genScript/OVTV"></script>
+<script lang="javascript" src="/vestful/DirectObject/genScript/OVTR"></script>
 <script lang="javascript" >
 
     function doOutput(msg){
@@ -16,13 +17,8 @@
     arraylist2 = null;
 
     function test(){
-        if(arraylist1 == null){
-           arraylist1 = new ArrayList();
-        }
-
-        if(arraylist2 == null){
-            arraylist2 = new ArrayList();
-        }
+        arraylist1 = new ArrayList();
+        arraylist2 = new ArrayList();
 
         doOutput("add item into arraylist1");
         arraylist1.add("aaaa");
@@ -37,9 +33,23 @@
         arraylist1.addAll(arraylist2)
         doOutput("arraylist1 current size: " + arraylist1.size());
 
+        arraylist1.clear();
+        doOutput("clear arraylist1 . " + arraylist1.size());
+
+        var testResult = new TestResult();
+        testResult.setTest1("helyho");
+        doOutput("new TestResult and set Test1 to \"helyho\" ");
+
+        arraylist1.add(testResult);
+        doOutput("add testResult to arraylist1. arraylist1 current size: "+ arraylist1.size());
+        var a= arraylist1.get(0);
+        var test1 = a.getTest1();
+        doOutput("get testResult field test1 is: " + test1);
+
         //手工释放对象,如果不手工释放则根据配置文件里的存活时常进行释放
         arraylist1.release();
         arraylist2.release();
+        doOutput("release arraylist1 & arraylist2<br/>");
     }
 
 </script>

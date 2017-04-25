@@ -137,11 +137,22 @@ public class DirectObject {
         try{
             Object result = TReflect.invokeMethod(obj,methodName,params);
 
-            //对链式调用的对象进行支持,返回 this
-            if(result!=null && result.equals(obj)){
-                return "this";
-            }else {
-                return JSON.toJSON(result);
+            if(result!=null){
+                //对于返回的对象进行处理以便在 js 中能够完成调用
+                if(!result.getClass().getCanonicalName().contains("java.lang")) {
+                    String objectId = objectPool.add(result);
+                    String script = genObjectScript(result.getClass().getCanonicalName(), objectId);
+                    script = script + ";\r\nnew " + result.getClass().getSimpleName() + "()";
+                    return script;
+                }
+                //对链式调用的对象进行支持,返回 this
+                else if(result.equals(obj)){
+                    return "this";
+                }else {
+                    return JSON.toJSON(result);
+                }
+            }else{
+                return null;
             }
 
         }catch(Exception e){
@@ -168,16 +179,13 @@ public class DirectObject {
     }
 
     /**
-     * 生成类对应的 js 脚本
+     * 生成对象对应的 js 脚本
      * @param className
+     * @param objectId
      * @return
      * @throws Exception
      */
-    @Restful( method="GET", desc="Get script of browser invoke server side object .")
-    public static String genScript(
-            @Param(name="className", desc="Which class want to generate javascript code.")
-            String className) throws Exception {
-
+    private static String genObjectScript(String className, String objectId) throws Exception {
         if(jsTemplate==null){
             throw new RestfulException("Load javascript template file error.",523,"SCRIPT_TEMPLATE_NOT_FOUND");
         }
@@ -208,11 +216,11 @@ public class DirectObject {
 
             funcTemplate.append("    this."+methodName+" = function("+funcParam+") {\r\n" );
             funcTemplate.append("        var argsArray = Array.prototype.slice.call(arguments); \r\n");
-            funcTemplate.append("        var currentTime = new Date().getTime(); \n");
             funcTemplate.append("        var resultText = invokeMathod(this.objectId, \""+methodName+"\",argsArray);\r\n" );
             funcTemplate.append("        try{ \r\n");
-            funcTemplate.append("           return eval('DO_t' + currentTime + '=' + resultText);\r\n" );
+            funcTemplate.append("           return eval(resultText);\r\n" );
             funcTemplate.append("        }catch(e){ \r\n");
+            funcTemplate.append("           console.log(e);");
             funcTemplate.append("           return resultText; \r\n");
             funcTemplate.append("        } \r\n");
             funcTemplate.append("    };\r\n\r\n");
@@ -224,8 +232,24 @@ public class DirectObject {
         returnTemplate = returnTemplate.replace("T/*CLASS_FULL_NAME*/", className);
         returnTemplate = returnTemplate.replace("T/*METHODS*/", funcTemplate.toString().trim());
         returnTemplate = returnTemplate.replace("T/*ROUTE*/", route);
+        returnTemplate = returnTemplate.replace("T/*OBJECTID*/", objectId==null?"null":"\""+objectId+"\"");
 
+        returnTemplate = returnTemplate.replaceAll("[\\r\\n][\\t\\s]*","");
         return returnTemplate;
+    }
+
+    /**
+     * 生成类对应的 js 脚本
+     * @param className
+     * @return
+     * @throws Exception
+     */
+    @Restful( method="GET", desc="Get script of browser invoke server side object .")
+    public static String genScript(
+            @Param(name="className", desc="Which class want to generate javascript code.")
+            String className) throws Exception {
+        return genObjectScript(className, null);
+
     }
 
     /**

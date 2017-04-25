@@ -3,14 +3,16 @@
  * 为了兼容 JS 语法, 替换的模板参数定位采用: T/×参数名称×/
 */
 function T/*CLASS_NAME*/() {
-    this.objectId = null;
+    this.objectId = T/*OBJECTID*/;
     this.type = "ServerObject";
 
     className = "T/*CLASS_FULL_NAME*/";
-    //构造器
+    /*构造器*/
     {
-        var constructorArgsArray = Array.prototype.slice.call(arguments);
-        this.objectId = createObject(className, constructorArgsArray);
+        if(this.objectId==null) {
+            var constructorArgsArray = Array.prototype.slice.call(arguments);
+            this.objectId = createObject(className, constructorArgsArray);
+        }
     };
 
     /**
@@ -28,10 +30,10 @@ function T/*CLASS_NAME*/() {
  */
 function createObject(v_className, v_params) {
     return ajax({
-        url: "T/*ROUTE*//createObject", //请求地址
-        type: "get", //请求方式
-        data: { className: v_className, params: v_params }, //请求参数
-        async: false, //是否同步
+        url: "T/*ROUTE*//createObject",
+        type: "get",
+        data: { className: v_className, params: v_params },
+        async: false,
         dataType: "json"
     });
 }
@@ -52,10 +54,10 @@ function invokeMathod(v_objectId, v_methodName, v_params) {
         v_params = [];
     }
     return ajax({
-        url: "T/*ROUTE*//invoke", //请求地址
-        type: "get", //请求方式
-        data: { pooledObjectId: v_objectId, methodName: v_methodName, params: v_params }, //请求参数
-        async: false, //是否同步
+        url: "T/*ROUTE*//invoke",
+        type: "get",
+        data: { pooledObjectId: v_objectId, methodName: v_methodName, params: v_params },
+        async: false,
         dataType: "json"
     });
 }
@@ -65,10 +67,10 @@ function invokeMathod(v_objectId, v_methodName, v_params) {
  */
 function release(v_objectId) {
     ajax({
-        url: "T/*ROUTE*//release", //请求地址
-        type: "get", //请求方式
-        data: { pooledObjectId: v_objectId }, //请求参数
-        async: false, //是否同步
+        url: "T/*ROUTE*//release",
+        type: "get",
+        data: { pooledObjectId: v_objectId },
+        async: false,
         dataType: "json"
     });
 }
@@ -83,18 +85,14 @@ function ajax(options) {
     options.dataType = options.dataType || "json";
     var params = formatParams(options.data);
 
-    //创建Ajax对象,浏览器兼容
     if (window.XMLHttpRequest) {
         var xhr = new XMLHttpRequest();
     } else {
-        //IE 浏览器创建 Ajax
         var xhr = new ActiveXObject('Microsoft.XMLHTTP');
     }
 
-    //状态变更事件回调函数
     if (options.async) {
         xhr.onreadystatechange = function() {
-            //4请求完成
             if (xhr.readyState == 4) {
                 var status = xhr.status;
                 if (status >= 200 && status < 300) {
@@ -106,13 +104,11 @@ function ajax(options) {
         }
     }
 
-    //连接&发送
     if (options.type == "GET") {
         xhr.open("GET", options.url + "?" + params, options.async);
         xhr.send(null);
     } else if (options.type == "POST") {
         xhr.open("POST", options.url, options.async);
-        //设置表单提交时的内容类型
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         xhr.send(params);
     }
@@ -128,7 +124,6 @@ function ajax(options) {
     }
 }
 
-//格式化参数
 function formatParams(data) {
     var arr = [];
     for (var name in data) {
