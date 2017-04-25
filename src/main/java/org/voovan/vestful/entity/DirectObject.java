@@ -14,10 +14,8 @@ import org.voovan.vestful.exception.RestfulException;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.lang.reflect.Parameter;
+import java.util.*;
 
 /**
  * 类文字命名
@@ -35,6 +33,7 @@ public class DirectObject {
     private static List<String> classControls;
     private static String route = "DirectObject";
     private static Map<String,String> aliases;
+    private static boolean debug = false;
 
 
     /**
@@ -66,8 +65,16 @@ public class DirectObject {
      * 设置对象池的对象存活时间
      * @param aliveTime 对象存活时间,单位:秒
      */
-    public static void setObjectAliveTime(int aliveTime){
-        VestfulGlobal.getObjectPool().setAliveTime(aliveTime);
+    public static void setObjectAliveTime(int aliveTimeParam){
+        VestfulGlobal.getObjectPool().setAliveTime(aliveTimeParam);
+    }
+
+    /**
+     * 是否调试模式 调试模式
+     * @param debugParam true: 调试模式打开,false: 调试模式关闭
+     */
+    public static void setDebug(boolean debugParam){
+        debug = debugParam;
     }
 
     public static String getJSTemplate(){
@@ -86,7 +93,7 @@ public class DirectObject {
      * @return 返回新建的对象
      * @throws ReflectiveOperationException
      */
-    @Restful( method="GET", desc="Create new object in server side.")
+    @Restful( method="POST", desc="Create new object in server side.")
     public static String createObject(
             @Param(name="className", desc = "Class full path name.")
                     String className,
@@ -121,14 +128,17 @@ public class DirectObject {
      * @param params 参数集合
      * @return 方法返回值
      */
-    @Restful( method="GET", desc="Invoke Object method.")
+    @Restful( method="POST", desc="Invoke Object method.")
     public static String invoke(
             @Param(name="pooledObjectId", desc="Object id in ObjectPool.")
                     String pooledObjectId,
             @Param(name="methodName", desc="name of which method you want to invoke.")
                     String methodName,
+            @Param(name="type", desc="Method return type [OBJECT,JSON] default is JSON.")
+            String type,
             @Param(name="params", desc="Method invoke params.")
-            Object ...params) throws Exception {
+            Object ...params
+            ) throws Exception {
         Object obj = objectPool.get(pooledObjectId);
         if(obj==null){
             throw new RestfulException("Object not found, Object id: " + pooledObjectId,522,"OBJECT_NOT_FOUND");
@@ -138,21 +148,24 @@ public class DirectObject {
             Object result = TReflect.invokeMethod(obj,methodName,params);
 
             if(result!=null){
-                //对于返回的对象进行处理以便在 js 中能够完成调用
-                if(!result.getClass().getCanonicalName().contains("java.lang")) {
+
+                //对链式调用的对象进行支持,返回 this
+                if(result.equals(obj)) {
+                    return "this";
+                }
+                //返回对象,以便在 js 中能够完成调用
+                else if (type.equals("OBJECT")) {
                     String objectId = objectPool.add(result);
                     String script = genObjectScript(result.getClass().getCanonicalName(), objectId);
                     script = script + ";\r\nnew " + result.getClass().getSimpleName() + "()";
                     return script;
                 }
-                //对链式调用的对象进行支持,返回 this
-                else if(result.equals(obj)){
-                    return "this";
-                }else {
+                //返回 JSON 数据
+                else if(type.equals("JSON")) {
                     return JSON.toJSON(result);
+                }else{
+                    throw new RestfulException("Method invoke type \""+type+"\" isn't defined.");
                 }
-            }else{
-                return null;
             }
 
         }catch(Exception e){
@@ -163,6 +176,7 @@ public class DirectObject {
             }
         }
 
+        return null;
     }
 
     /**
@@ -170,7 +184,7 @@ public class DirectObject {
      * @param pooledObjectId 对象在对象池中的 ID
      * @return 方法返回值
      */
-    @Restful( method="GET", desc="Invoke Object method.")
+    @Restful( method="POST", desc="Invoke Object method.")
     public static void release(
             @Param(name="pooledObjectId", desc="Object id in ObjectPool.")
                     String pooledObjectId
@@ -207,20 +221,34 @@ public class DirectObject {
         for(Method method : methods){
             String methodName = method.getName();
 
+            Parameter[] parameters = method.getParameters();
             if("main".equals(methodName)){}
             String funcParam = "";
-            for(int i=0; i<method.getParameters().length; i++){
+            for(int i=0; i<parameters.length; i++){
                 funcParam = funcParam + "arg"+(i+1)+", ";
             }
+
             funcParam = TString.removeSuffix(funcParam.trim());
 
-            funcTemplate.append("    this."+methodName+" = function("+funcParam+") {\r\n" );
+            funcTemplate.append("    this."+methodName+" = function("+funcParam+ (parameters.length > 0?",":"") +" type) {\r\n" );
             funcTemplate.append("        var argsArray = Array.prototype.slice.call(arguments); \r\n");
-            funcTemplate.append("        var resultText = invokeMathod(this.objectId, \""+methodName+"\",argsArray);\r\n" );
+            funcTemplate.append("        var argsCount = "+parameters.length+"; \r\n");
+            funcTemplate.append("        var argsArray = argsArray.slice(0,argsCount); \r\n");
+            funcTemplate.append("        if(type==undefined || type==null){ \r\n");
+            funcTemplate.append("            type='JSON'; \r\n");
+            funcTemplate.append("        }\r\n");
+            funcTemplate.append("        var resultText = invokeMathod(this.objectId, \""+methodName+"\", type, argsArray);\r\n" );
             funcTemplate.append("        try{ \r\n");
-            funcTemplate.append("           return eval(resultText);\r\n" );
+            funcTemplate.append("           if(type=='JSON'){ \r\n");
+            funcTemplate.append("               var currentTime = new Date().getTime(); \r\n");
+            funcTemplate.append("               return eval('DO_t' + currentTime + '=' + resultText);\r\n" );
+            funcTemplate.append("           }else if(type=='OBJECT'){  \r\n");
+            funcTemplate.append("               return eval(resultText);\r\n" );
+            funcTemplate.append("           }else {  \r\n");
+            funcTemplate.append("               throw new Error('Method invoke type \"+type+\" isn\\\'t defined.'); \r\n");
+            funcTemplate.append("           }  \r\n");
             funcTemplate.append("        }catch(e){ \r\n");
-            funcTemplate.append("           console.log(e);");
+            funcTemplate.append("           console.log(e);\r\n");
             funcTemplate.append("           return resultText; \r\n");
             funcTemplate.append("        } \r\n");
             funcTemplate.append("    };\r\n\r\n");
@@ -234,7 +262,9 @@ public class DirectObject {
         returnTemplate = returnTemplate.replace("T/*ROUTE*/", route);
         returnTemplate = returnTemplate.replace("T/*OBJECTID*/", objectId==null?"null":"\""+objectId+"\"");
 
-        returnTemplate = returnTemplate.replaceAll("[\\r\\n][\\t\\s]*","");
+        if(!debug) {
+            returnTemplate = returnTemplate.replaceAll("[\\r\\n][\\t\\s]*", "");
+        }
         return returnTemplate;
     }
 

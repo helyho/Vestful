@@ -42,9 +42,11 @@
 
         arraylist1.add(testResult);
         doOutput("add testResult to arraylist1. arraylist1 current size: "+ arraylist1.size());
-        var a= arraylist1.get(0);
+        var a= arraylist1.get(0,"OBJECT");
         var test1 = a.getTest1();
-        doOutput("get testResult field test1 is: " + test1);
+        doOutput("get testResult as \"OBJECT\" field \"test1\" is: " + test1);
+
+        doOutput("get testResult as \"JSON\": "+JSON.stringify(arraylist1.get(0)));
 
         //手工释放对象,如果不手工释放则根据配置文件里的存活时常进行释放
         arraylist1.release();

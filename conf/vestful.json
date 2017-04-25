@@ -25,6 +25,7 @@
         "OVTV": "org.voovan.test.vestful.TestClass",
         "OVTR": "org.voovan.test.vestful.TestResult"
       },
+      "debug":true,
       //对象存活时间控制,单位:秒
       "objectAliveTime":60
     }

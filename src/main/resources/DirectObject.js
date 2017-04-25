@@ -1,7 +1,3 @@
-/**
- * 对象方法模板
- * 为了兼容 JS 语法, 替换的模板参数定位采用: T/×参数名称×/
-*/
 function T/*CLASS_NAME*/() {
     this.objectId = T/*OBJECTID*/;
     this.type = "ServerObject";
@@ -31,7 +27,7 @@ function T/*CLASS_NAME*/() {
 function createObject(v_className, v_params) {
     return ajax({
         url: "T/*ROUTE*//createObject",
-        type: "get",
+        type: "POST",
         data: { className: v_className, params: v_params },
         async: false,
         dataType: "json"
@@ -41,7 +37,7 @@ function createObject(v_className, v_params) {
 /**
  * 调用对象的某个方法
  */
-function invokeMathod(v_objectId, v_methodName, v_params) {
+function invokeMathod(v_objectId, v_methodName, v_type, v_params) {
     if (v_objectId == null) {
         throw new error("this object is not instance");
     }
@@ -50,13 +46,17 @@ function invokeMathod(v_objectId, v_methodName, v_params) {
         throw new error(" if you want to invoke method , they need a method name.");
     }
 
+    if(v_type==null){
+        v_type="JSON"
+    }
+
     if (v_params == null) {
         v_params = [];
     }
     return ajax({
         url: "T/*ROUTE*//invoke",
-        type: "get",
-        data: { pooledObjectId: v_objectId, methodName: v_methodName, params: v_params },
+        type: "POST",
+        data: {methodName: v_methodName, type: v_type, params: v_params, pooledObjectId: v_objectId},
         async: false,
         dataType: "json"
     });
@@ -68,7 +68,7 @@ function invokeMathod(v_objectId, v_methodName, v_params) {
 function release(v_objectId) {
     ajax({
         url: "T/*ROUTE*//release",
-        type: "get",
+        type: "POST",
         data: { pooledObjectId: v_objectId },
         async: false,
         dataType: "json"
