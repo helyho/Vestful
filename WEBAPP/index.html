@@ -48,6 +48,10 @@
 
         doOutput("get testResult as \"JSON\": "+JSON.stringify(arraylist1.get(0)));
 
+        var test1 = a.getTest1(function(respText){
+            alert(respText)
+        });
+
         //手工释放对象,如果不手工释放则根据配置文件里的存活时常进行释放
         arraylist1.release();
         arraylist2.release();

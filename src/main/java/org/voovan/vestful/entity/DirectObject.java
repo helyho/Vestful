@@ -34,6 +34,7 @@ public class DirectObject {
     private static String route = "DirectObject";
     private static Map<String,String> aliases;
     private static boolean debug = false;
+    private static Map<String,String> scriptCache = new HashMap<String, String>();
 
 
     /**
@@ -212,54 +213,46 @@ public class DirectObject {
                 }
             }
         }
+        String returnTemplate = null;
+        String cachedScript = scriptCache.get(className);
 
-        StringBuilder funcTemplate = new StringBuilder();
-        Class clazz = Class.forName(className);
-        Method[] methods = TReflect.getMethods(clazz);
+        if(cachedScript == null){
 
-        //逐个生成类的所有方法
-        for(Method method : methods){
-            String methodName = method.getName();
+            StringBuilder funcTemplate = new StringBuilder();
+            Class clazz = Class.forName(className);
+            Method[] methods = TReflect.getMethods(clazz);
 
-            Parameter[] parameters = method.getParameters();
-            if("main".equals(methodName)){}
-            String funcParam = "";
-            for(int i=0; i<parameters.length; i++){
-                funcParam = funcParam + "arg"+(i+1)+", ";
+            //逐个生成类的所有方法
+            for(Method method : methods){
+                String methodName = method.getName();
+
+                Parameter[] parameters = method.getParameters();
+                if("main".equals(methodName)){}
+                String funcParam = "";
+                for(int i=0; i<parameters.length; i++){
+                    funcParam = funcParam + "arg"+(i+1)+", ";
+                }
+
+                funcParam = TString.removeSuffix(funcParam.trim());
+
+                funcTemplate.append("    this."+methodName+" = function("+funcParam+ (parameters.length > 0?",":"") +" type, success, fail) {\r\n" );
+                funcTemplate.append("        var args = methodArgs(arguments, type, success, fail, "+parameters.length+"); \r\n");
+                funcTemplate.append("        return invokeMathod(this.objectId, \""+methodName+"\", args.type, args.success, args.fail, args.args);\r\n" );
+                funcTemplate.append("    };\r\n\r\n");
             }
 
-            funcParam = TString.removeSuffix(funcParam.trim());
+            returnTemplate = jsTemplate;
 
-            funcTemplate.append("    this."+methodName+" = function("+funcParam+ (parameters.length > 0?",":"") +" type) {\r\n" );
-            funcTemplate.append("        var argsArray = Array.prototype.slice.call(arguments); \r\n");
-            funcTemplate.append("        var argsCount = "+parameters.length+"; \r\n");
-            funcTemplate.append("        var argsArray = argsArray.slice(0,argsCount); \r\n");
-            funcTemplate.append("        if(type==undefined || type==null){ \r\n");
-            funcTemplate.append("            type='JSON'; \r\n");
-            funcTemplate.append("        }\r\n");
-            funcTemplate.append("        var resultText = invokeMathod(this.objectId, \""+methodName+"\", type, argsArray);\r\n" );
-            funcTemplate.append("        try{ \r\n");
-            funcTemplate.append("           if(type=='JSON'){ \r\n");
-            funcTemplate.append("               var currentTime = new Date().getTime(); \r\n");
-            funcTemplate.append("               return eval('DO_t' + currentTime + '=' + resultText);\r\n" );
-            funcTemplate.append("           }else if(type=='OBJECT'){  \r\n");
-            funcTemplate.append("               return eval(resultText);\r\n" );
-            funcTemplate.append("           }else {  \r\n");
-            funcTemplate.append("               throw new Error('Method invoke type \"+type+\" isn\\\'t defined.'); \r\n");
-            funcTemplate.append("           }  \r\n");
-            funcTemplate.append("        }catch(e){ \r\n");
-            funcTemplate.append("           console.log(e);\r\n");
-            funcTemplate.append("           return resultText; \r\n");
-            funcTemplate.append("        } \r\n");
-            funcTemplate.append("    };\r\n\r\n");
+            returnTemplate = returnTemplate.replace("T/*CLASS_NAME*/", clazz.getSimpleName());
+            returnTemplate = returnTemplate.replace("T/*CLASS_FULL_NAME*/", className);
+            returnTemplate = returnTemplate.replace("T/*METHODS*/", funcTemplate.toString().trim());
+            returnTemplate = returnTemplate.replace("T/*ROUTE*/", route);
+
+            scriptCache.put(className,returnTemplate);
+        }else{
+            returnTemplate = scriptCache.get(className);
         }
 
-        String returnTemplate = jsTemplate;
-
-        returnTemplate = returnTemplate.replace("T/*CLASS_NAME*/", clazz.getSimpleName());
-        returnTemplate = returnTemplate.replace("T/*CLASS_FULL_NAME*/", className);
-        returnTemplate = returnTemplate.replace("T/*METHODS*/", funcTemplate.toString().trim());
-        returnTemplate = returnTemplate.replace("T/*ROUTE*/", route);
         returnTemplate = returnTemplate.replace("T/*OBJECTID*/", objectId==null?"null":"\""+objectId+"\"");
 
         if(!debug) {

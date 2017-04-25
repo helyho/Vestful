@@ -35,9 +35,48 @@ function createObject(v_className, v_params) {
 }
 
 /**
+ * 处理方法的参数
+ */
+function methodArgs(arguments, type, success, fail, argsCount){
+    var argsArray = Array.prototype.slice.call(arguments);
+    var argsArray = argsArray.slice(0,argsCount);
+
+    if(type==null){
+        type='JSON';
+    }
+
+    if(type instanceof Function) {
+        success = type;
+        fail = success;
+        type="JSON";
+    }
+
+    return { "args":argsArray, "type":type, "success":success,"fail":fail};
+}
+
+/**
+ * 处理方法返回的数据
+ */
+function methodResult(type, resultText){
+    try{
+        if(type=='JSON'){
+            var currentTime = new Date().getTime();
+            return eval('DO_t' + currentTime + '=' + resultText);
+        }else if(type=='OBJECT'){
+            return eval(resultText);
+        }else {
+            throw new Error('Method invoke type "+type+" isn\'t defined.');
+        }
+    }catch(e){
+        console.log(e);
+        return resultText;
+    }
+}
+
+/**
  * 调用对象的某个方法
  */
-function invokeMathod(v_objectId, v_methodName, v_type, v_params) {
+function invokeMathod(v_objectId, v_methodName, v_type, v_success, v_fail, v_params) {
     if (v_objectId == null) {
         throw new error("this object is not instance");
     }
@@ -47,19 +86,44 @@ function invokeMathod(v_objectId, v_methodName, v_type, v_params) {
     }
 
     if(v_type==null){
-        v_type="JSON"
+        v_type="JSON";
     }
 
     if (v_params == null) {
         v_params = [];
     }
-    return ajax({
-        url: "T/*ROUTE*//invoke",
-        type: "POST",
-        data: {methodName: v_methodName, type: v_type, params: v_params, pooledObjectId: v_objectId},
-        async: false,
-        dataType: "json"
-    });
+
+    function success(responseText){
+        var resultObj = methodResult(v_type, responseText);
+        v_success(resultObj);
+    }
+
+    function fail(status, responseText){
+        var resultObj = {"status":status, "responseText":responseText};
+        v_success(resultObj);
+    }
+
+    if(v_success==null && v_fail == null) {
+        var responseText =  ajax({
+            url: "T/*ROUTE*//invoke",
+            type: "POST",
+            data: {methodName: v_methodName, type: v_type, params: v_params, pooledObjectId: v_objectId},
+            async: false,
+            dataType: "json"
+        });
+
+        return methodResult(v_type, responseText);
+    }else{
+        return ajax({
+            url: "T/*ROUTE*//invoke",
+            type: "POST",
+            data: {methodName: v_methodName, type: v_type, params: v_params, pooledObjectId: v_objectId},
+            async: true,
+            dataType: "json",
+            success: success,
+            fail: v_fail
+        });
+    }
 }
 
 /**
@@ -96,9 +160,9 @@ function ajax(options) {
             if (xhr.readyState == 4) {
                 var status = xhr.status;
                 if (status >= 200 && status < 300) {
-                    options.success && options.success(xhr.responseText, xhr.responseXML);
+                    options.success && options.success(xhr.responseText);
                 } else {
-                    options.fail && options.fail(status);
+                    options.fail && options.fail(status, xhr.responseText);
                 }
             }
         }
@@ -116,7 +180,7 @@ function ajax(options) {
     if (!options.async) {
         if (xhr.readyState == 4) {
             if (xhr.status >= 200 && xhr.status < 300) {
-                return xhr.responseText
+                return xhr.responseText;
             }else{
                 throw new Error(xhr.responseText);
             }
