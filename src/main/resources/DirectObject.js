@@ -46,8 +46,8 @@ function methodArgs(arguments, type, success, fail, argsCount){
     }
 
     if(type instanceof Function) {
-        success = type;
         fail = success;
+        success = type;
         type="JSON";
     }
 
