@@ -28,7 +28,7 @@ import java.util.Map;
 public class RestfulModule extends HttpModule{
 
     public static void addClassConfig(List<Map<String, Object>> classConfigs, String name, String route, String classPath, String desc){
-        classConfigs.add(TObject.newMap("name",name,"route",route,"classPath",classPath,"desc",desc));
+        classConfigs.add(TObject.asMap("name",name,"route",route,"classPath",classPath,"desc",desc));
     }
 
     /**
