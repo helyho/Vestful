@@ -65,7 +65,7 @@ function methodResult(type, resultText){
         }else if(type=='OBJECT'){
             return eval(resultText);
         }else {
-            throw new Error('Method invoke type "+type+" isn\'t defined.');
+            throw new Error('Method invoke type '+type+' isn\'t defined.');
         }
     }catch(e){
         console.log(e);

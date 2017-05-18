@@ -227,7 +227,11 @@ public class DirectObject {
                 String methodName = method.getName();
 
                 Parameter[] parameters = method.getParameters();
-                if("main".equals(methodName)){}
+
+                if("main".equals(methodName)){
+                    continue;
+                }
+
                 String funcParam = "";
                 for(int i=0; i<parameters.length; i++){
                     funcParam = funcParam + "arg"+(i+1)+", ";
