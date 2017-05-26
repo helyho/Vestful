@@ -66,8 +66,8 @@ public class DirectObject {
      * 设置对象池的对象存活时间
      * @param aliveTime 对象存活时间,单位:秒
      */
-    public static void setObjectAliveTime(int aliveTimeParam){
-        VestfulGlobal.getObjectPool().setAliveTime(aliveTimeParam);
+    public static void setObjectAliveTime(int aliveTime){
+        VestfulGlobal.getObjectPool().setAliveTime(aliveTime);
     }
 
     /**
@@ -291,8 +291,6 @@ public class DirectObject {
                 Map mapParam = TObject.cast(param,Map.class);
                 if(mapParam.size() == 2 &&
                         mapParam.containsKey("objectId") &&
-                        mapParam.get("objectId").toString().length() == 32 &&
-                        mapParam.containsKey("type") &&
                         "ServerObject".equals(mapParam.get("type"))
                 ){
                     String objectId = mapParam.get("objectId").toString();
