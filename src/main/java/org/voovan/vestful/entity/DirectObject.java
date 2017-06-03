@@ -142,7 +142,7 @@ public class DirectObject {
             ) throws Exception {
         Object obj = objectPool.get(pooledObjectId);
         if(obj==null){
-            throw new RestfulException("Object not found, Object id: " + pooledObjectId,522,"OBJECT_NOT_FOUND");
+            throw new RestfulException("Object not found, Object id: " + pooledObjectId, 522, "OBJECT_NOT_FOUND");
         }
         params = converParam(params);
         try{
@@ -165,7 +165,7 @@ public class DirectObject {
                 else if(type.equals("JSON")) {
                     return JSON.toJSON(result);
                 }else{
-                    throw new RestfulException("Method invoke type \""+type+"\" isn't defined.");
+                    throw new RestfulException("Method invoke type \""+type+"\" not defined.");
                 }
             }
 
@@ -226,21 +226,21 @@ public class DirectObject {
             for(Method method : methods){
                 String methodName = method.getName();
 
-                Parameter[] parameters = method.getParameters();
+                int parameterCount = method.getParameterCount();
 
                 if("main".equals(methodName)){
                     continue;
                 }
 
                 String funcParam = "";
-                for(int i=0; i<parameters.length; i++){
+                for(int i=0; i<parameterCount; i++){
                     funcParam = funcParam + "arg"+(i+1)+", ";
                 }
 
                 funcParam = TString.removeSuffix(funcParam.trim());
 
-                funcTemplate.append("    this."+methodName+" = function("+funcParam+ (parameters.length > 0?",":"") +" type, success, fail) {\r\n" );
-                funcTemplate.append("        var args = methodArgs(arguments, type, success, fail, "+parameters.length+"); \r\n");
+                funcTemplate.append("    this."+methodName+" = function("+funcParam+ (parameterCount > 0?",":"") +" type, success, fail) {\r\n" );
+                funcTemplate.append("        var args = methodArgs(arguments, type, success, fail, "+parameterCount+"); \r\n");
                 funcTemplate.append("        return invokeMathod(this.objectId, \""+methodName+"\", args.type, args.success, args.fail, args.args);\r\n" );
                 funcTemplate.append("    };\r\n\r\n");
             }
