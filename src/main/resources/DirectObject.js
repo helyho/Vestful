@@ -1,8 +1,8 @@
-function T/*CLASS_NAME*/() {
-    this.objectId = T/*OBJECTID*/;
+function {{CLASS_NAME}}() {
+    this.objectId = {{OBJECTID}};
     this.type = "ServerObject";
 
-    className = "T/*CLASS_FULL_NAME*/";
+    className = "{{CLASS_FULL_NAME}}";
     /*构造器*/
     {
         if(this.objectId==null) {
@@ -18,7 +18,7 @@ function T/*CLASS_NAME*/() {
         release(this.objectId);
     };
 
-    T/*METHODS*/
+    {{METHODS}}
 }
 
 /**
@@ -26,7 +26,7 @@ function T/*CLASS_NAME*/() {
  */
 function createObject(v_className, v_params) {
     return ajax({
-        url: "T/*ROUTE*//createObject",
+        url: "{{ROUTE}}/createObject",
         type: "POST",
         data: { className: v_className, params: v_params },
         async: false,
@@ -105,7 +105,7 @@ function invokeMathod(v_objectId, v_methodName, v_type, v_success, v_fail, v_par
 
     if(v_success==null && v_fail == null) {
         var responseText =  ajax({
-            url: "T/*ROUTE*//invoke",
+            url: "{{ROUTE}}/invoke",
             type: "POST",
             data: {methodName: v_methodName, type: v_type, params: v_params, pooledObjectId: v_objectId},
             async: false,
@@ -115,7 +115,7 @@ function invokeMathod(v_objectId, v_methodName, v_type, v_success, v_fail, v_par
         return methodResult(v_type, responseText);
     }else{
         return ajax({
-            url: "T/*ROUTE*//invoke",
+            url: "{{ROUTE}}/invoke",
             type: "POST",
             data: {methodName: v_methodName, type: v_type, params: v_params, pooledObjectId: v_objectId},
             async: true,
@@ -131,7 +131,7 @@ function invokeMathod(v_objectId, v_methodName, v_type, v_success, v_fail, v_par
  */
 function release(v_objectId) {
     ajax({
-        url: "T/*ROUTE*//release",
+        url: "{{ROUTE}}/release",
         type: "POST",
         data: { pooledObjectId: v_objectId },
         async: false,

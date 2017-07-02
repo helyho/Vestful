@@ -247,17 +247,20 @@ public class DirectObject {
 
             returnTemplate = jsTemplate;
 
-            returnTemplate = returnTemplate.replace("T/*CLASS_NAME*/", clazz.getSimpleName());
-            returnTemplate = returnTemplate.replace("T/*CLASS_FULL_NAME*/", className);
-            returnTemplate = returnTemplate.replace("T/*METHODS*/", funcTemplate.toString().trim());
-            returnTemplate = returnTemplate.replace("T/*ROUTE*/", route);
+            Map tamplateMap = TObject.asMap(
+            "CLASS_NAME", clazz.getSimpleName(),
+            "CLASS_FULL_NAME", className,
+            "METHODS", funcTemplate.toString().trim(),
+            "ROUTE", route);
+
+            returnTemplate = TString.tokenReplace(returnTemplate,tamplateMap);
 
             scriptCache.put(className,returnTemplate);
         }else{
             returnTemplate = scriptCache.get(className);
         }
 
-        returnTemplate = returnTemplate.replace("T/*OBJECTID*/", objectId==null?"null":"\""+objectId+"\"");
+        returnTemplate = TString.tokenReplace(returnTemplate, TObject.asMap("OBJECTID", objectId==null?"null":"\""+objectId+"\""));
 
         if(!debug) {
             returnTemplate = returnTemplate.replaceAll("[\\r\\n][\\t\\s]*", "");
