@@ -14,7 +14,6 @@ import org.voovan.vestful.exception.RestfulException;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
 import java.util.*;
 
 /**
@@ -291,7 +290,7 @@ public class DirectObject {
         for(int i=0; i<params.length; i++){
             Object param = params[i];
             if(param instanceof Map){
-                Map mapParam = TObject.cast(param,Map.class);
+                Map mapParam = (Map)param;
                 if(mapParam.size() == 2 &&
                         mapParam.containsKey("objectId") &&
                         "ServerObject".equals(mapParam.get("type"))

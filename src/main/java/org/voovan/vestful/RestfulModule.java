@@ -40,11 +40,11 @@ public class RestfulModule extends HttpModule{
         List<ClassElement> classElements = new ArrayList<ClassElement>();
         try {
             byte[] fileContent = TFile.loadFileFromContextPath("conf/vestful.json");
-            List<Map<String, Object>> classConfigs = TObject.cast(JSON.parse(new String(fileContent, "UTF-8")));
+            List<Map<String, Object>> classConfigs = (List<Map<String, Object>>)JSON.parse(new String(fileContent, "UTF-8"));
             //从配置中读取 restful 配置的 class
             for (Map<String, Object> classConfig : classConfigs) {
                 //通过反射构造ClassElement 元素
-                ClassElement classElement = TObject.cast(TReflect.getObjectFromMap(ClassElement.class, classConfig, true));
+                ClassElement classElement = (ClassElement)TReflect.getObjectFromMap(ClassElement.class, classConfig, true);
                 //填充方法信息
                 classElement.getMethodElement();
                 //增加类元素到 List

@@ -75,7 +75,7 @@ public class ClassElement {
                 continue;
             }
             //读取方法的注解
-            Restful restfulAnnotation = TObject.cast(method.getAnnotation(Restful.class));
+            Restful restfulAnnotation = (Restful)method.getAnnotation(Restful.class);
             if(restfulAnnotation!=null){
                 MethodElement methodElement = new MethodElement(this.route, method.getName(), restfulAnnotation.desc(),
                         method,restfulAnnotation.method());
@@ -93,7 +93,7 @@ public class ClassElement {
                         //遍历方法参数注解
                         for(Annotation annocation : annotations){
                             if(annocation instanceof Param){
-                                Param paramAnnocation = TObject.cast(annocation);
+                                Param paramAnnocation = (Param)annocation;
                                 //构造参数元素
                                 ParamElement paramElement = new ParamElement(paramAnnocation.name(),paramAnnocation.desc(),paramClazz);
                                 methodElement.addParamElements(paramElement);
