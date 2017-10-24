@@ -14,6 +14,7 @@ import org.voovan.vestful.exception.RestfulException;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.*;
 
 /**
@@ -223,6 +224,11 @@ public class DirectObject {
 
             //逐个生成类的所有方法
             for(Method method : methods){
+
+                if(method.getModifiers() != Modifier.PUBLIC){
+                    continue;
+                }
+
                 String methodName = method.getName();
 
                 int parameterCount = method.getParameterCount();
