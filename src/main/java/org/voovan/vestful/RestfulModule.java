@@ -115,4 +115,9 @@ public class RestfulModule extends HttpModule{
             otherMethod("GET", route+"!!", new ClassModelRouter(classElemenet));
         }
     }
+
+    @Override
+    public void unInstall() {
+
+    }
 }
